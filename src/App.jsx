@@ -1,4 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+
+import Quotation from "./Components/Quotation/Quotation";
+
 import "./App.css";
 
 const services = [
@@ -42,34 +45,34 @@ const services = [
 
 const projects = [
   {
-    title: "Brand Film",
+    title: "Promotional Shoot",
     category: "CINEMATIC FILM",
     image:
-      "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=85",
+      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834997/One_More_Take__Cinematic_Production_Set_wgexcd.png",
   },
   {
     title: "Social Reels",
     category: "SHORT FORM",
     image:
-      "https://res.cloudinary.com/db4faz2rs/image/upload/v1789708306/ChatGPT_Image_Sep_18_2026_10_41_39_AM_zfywks.png",
+      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834834/One_More_Take__Shoot_Cut_Ready_xcpbp9.png",
   },
   {
     title: "Events",
     category: "EVENT FILMS",
     image:
-      "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=1200&q=85",
+      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834832/Event_Videography_in_Action_vg5ttu.png",
   },
   {
     title: "Podcasts",
     category: "PODCAST",
     image:
-      "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?auto=format&fit=crop&w=1200&q=85",
+      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834689/One_More_Take_Podcast_Studio_vl8pmk.png",
   },
   {
-    title: "Product Film",
+    title: "Video Editing",
     category: "PRODUCT",
     image:
-      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=1200&q=85",
+      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790835981/One_More_Take_Creative_Studio_nd96gk.png",
   },
 ];
 
@@ -86,12 +89,7 @@ const reviews = [
     name: "Sampath Kumar B",
     role: "Founder of SWIPERCLICK",
   },
-  {
-    quote:
-      "They brought our ideas to life with clarity, energy and a very strong visual style.",
-    name: "Sneha Reddy",
-    role: "Marketing Manager",
-  },
+
 ];
 
 function App() {
@@ -357,19 +355,29 @@ function App() {
       {/* ================= NAVBAR ================= */}
 
       <header className="navbar">
+<button
+  className="brand-logo"
+  onClick={() => scrollTo("home")}
+  aria-label="One More Take"
+>
+  <div className="logo-stage">
 
-        <button
-          className="logo"
-          onClick={() => scrollTo("home")}
-        >
-          <span className="logo-mark">
-            <i></i>
-          </span>
+    <img
+      src="/One More Take Logo.png"
+      alt="One More Take"
+      className="logo-base"
+    />
 
-          <span>
-            ONE MORE <b>TAKE</b>
-          </span>
-        </button>
+    <span className="o-mask"></span>
+
+    <span className="animated-o">
+      <span className="o-ring"></span>
+      <span className="o-inner"></span>
+      <span className="o-center"></span>
+    </span>
+
+  </div>
+</button>
 
         <nav>
           {[
@@ -497,7 +505,7 @@ function App() {
             </div>
 
             <div>
-              <strong>60+</strong>
+              <strong>20+</strong>
               <span>CLIENTS</span>
             </div>
 
@@ -1015,7 +1023,7 @@ function App() {
           {[
             ["3+", "Years", "in the industry"],
             ["100+", "Projects", "delivered"],
-            ["60+", "Clients", "worked with"],
+            ["20+", "Clients", "worked with"],
             ["5+", "Industries", "served"],
           ].map((stat, index) => (
 
@@ -1126,7 +1134,7 @@ function App() {
 
       </section>
 
-
+<Quotation />
       {/* ================= CONTACT ================= */}
 
       <section id="contact" className="contact">
@@ -1200,7 +1208,7 @@ function App() {
               <div>
                 <small>EMAIL</small>
                 <p>
-                  hello@onemoretake.in
+                  onemoretake07@gmail.com
                 </p>
               </div>
 
@@ -1214,7 +1222,7 @@ function App() {
               <div>
                 <small>PHONE</small>
                 <p>
-                  +91 90000 12345
+                  +91 73311 32227
                 </p>
               </div>
 

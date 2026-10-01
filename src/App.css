@@ -234,48 +234,227 @@ img {
   color: var(--red);
 }
 
-.logo-mark {
+/* ==========================================
+   LOGO
+========================================== */
+
+.brand-logo {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.logo-stage {
   position: relative;
-
-  width: 24px;
-  height: 24px;
-
-  display: inline-block;
-
-  border:
-    3px solid var(--red);
-
-  border-radius: 50%;
+  width: 218px;
+  margin-right: 28px;
+  display: block;
+  line-height: 0;
 }
 
-.logo-mark::after {
-  content: "";
-
-  position: absolute;
-
-  width: 7px;
-  height: 7px;
-
-  left: 5px;
-  top: 5px;
-
-  background: var(--red);
-
-  border-radius: 50%;
+.logo-base {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
 }
 
-.logo-mark i {
+
+/* ==========================================
+   HIDE ORIGINAL O
+========================================== */
+
+.o-mask {
   position: absolute;
 
-  width: 3px;
-  height: 3px;
+  left: 10%;
+  top: 25%;
 
-  right: 1px;
-  top: 1px;
-
-  background: white;
+  width:0%;
+  height: 50%;
 
   border-radius: 50%;
+
+  background: #fff;
+
+  z-index: 4;
+}
+
+/* ==========================================
+   ANIMATED O
+========================================== */
+
+.animated-o {
+  position: absolute;
+
+  /* O position + middle gap */
+  left: 6%;
+  top: 32%;
+
+  width: 12%;
+  aspect-ratio: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+  pointer-events: none;
+}
+
+
+/* Outer ring */
+
+.o-ring {
+  position: absolute;
+
+  width: 78%;
+  height: 78%;
+
+  border: 2px solid #ed111b;
+
+  border-radius: 50%;
+
+  box-sizing: border-box;
+
+  animation:
+    logoORotate
+    5s
+    linear
+    infinite;
+}
+
+
+/* Inner ring */
+
+.o-inner {
+  position: absolute;
+
+  width: 45%;
+  height: 45%;
+
+  border: 2px solid #ed111b;
+
+  border-radius: 50%;
+
+  box-sizing: border-box;
+
+  animation:
+    logoOPulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+/* Center dot */
+
+.o-center {
+  position: absolute;
+
+  width: 13%;
+  height: 13%;
+
+  border-radius: 50%;
+
+  background: #ed111b;
+
+  animation:
+    logoOCenter
+    1.5s
+    ease-in-out
+    infinite;
+}
+
+
+/* ==========================================
+   ANIMATION
+========================================== */
+
+@keyframes logoORotate {
+
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+@keyframes logoOPulse {
+
+  0%,
+  100% {
+    transform: scale(.88);
+    opacity: .8;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+
+}
+
+@keyframes logoOCenter {
+
+  0%,
+  100% {
+    transform: scale(.8);
+
+    box-shadow:
+      0 0 0 rgba(237,17,27,0);
+  }
+
+  50% {
+    transform: scale(1.2);
+
+    box-shadow:
+      0 0 14px rgba(237,17,27,.45);
+  }
+
+}
+
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.brand-logo:hover .o-ring {
+  animation-duration: 1.6s;
+}
+
+.brand-logo:hover .o-inner {
+  transform: scale(1.1);
+}
+
+.brand-logo:hover .o-center {
+  transform: scale(1.25);
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 700px) {
+
+  .logo-stage {
+    width: 155px;
+  }
+
+  .o-ring,
+  .o-inner {
+    border-width: 1.5px;
+  }
+
 }
 
 .navbar nav {
