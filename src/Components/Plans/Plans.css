@@ -1,0 +1,980 @@
+/* =====================================================
+   ONE MORE TAKE — PLANS SECTION
+===================================================== */
+
+.plans {
+  position: relative;
+  overflow: hidden;
+  background: #090909;
+  color: #ffffff;
+}
+
+/* =====================================================
+   BACKGROUND EFFECTS
+===================================================== */
+
+.plans-background-glow {
+  position: absolute;
+  width: 850px;
+  height: 850px;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(237, 17, 27, 0.16),
+    rgba(237, 17, 27, 0.05) 35%,
+    transparent 70%
+  );
+  filter: blur(30px);
+  animation: omtPlansGlow 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.plans-background-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.14;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 70px 70px;
+  pointer-events: none;
+}
+
+/* =====================================================
+   SECTION HEADING
+===================================================== */
+
+.plans-heading {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 55px;
+  text-align: center;
+}
+
+.plans-heading .section-label {
+  justify-content: center;
+}
+
+.plans-heading h2 {
+  margin-top: 22px;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(45px, 5vw, 76px);
+  line-height: 0.9;
+  letter-spacing: clamp(-4px, -0.3vw, -2px);
+  font-weight: 800;
+}
+
+.plans-heading h2 em {
+  color: var(--red, #ed111b);
+  font-style: normal;
+}
+
+.plans-heading p {
+  max-width: 520px;
+  margin: 20px auto 0;
+  color: #888888;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* =====================================================
+   PLANS GRID
+===================================================== */
+
+.plans-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  align-items: stretch;
+}
+
+/* =====================================================
+   PLAN CARD
+===================================================== */
+
+.plan-card {
+  position: relative;
+  min-width: 0;
+  min-height: 500px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  isolation: isolate;
+  transition:
+    transform 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    border-color 0.5s ease,
+    background 0.5s ease,
+    box-shadow 0.5s ease;
+}
+
+.plan-card::before {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  right: -110px;
+  top: -110px;
+  z-index: 0;
+  border-radius: 50%;
+  background: rgba(237, 17, 27, 0.07);
+  transition: transform 0.7s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.plan-card:hover {
+  transform: translateY(-14px);
+  border-color: rgba(237, 17, 27, 0.6);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.4);
+}
+
+.plan-card:hover::before {
+  transform: scale(2.4);
+}
+
+/* =====================================================
+   CARD NUMBER + ICON
+===================================================== */
+
+.plan-number {
+  position: relative;
+  z-index: 2;
+  color: #666666;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.plan-icon {
+  position: relative;
+  z-index: 2;
+  width: 54px;
+  height: 54px;
+  margin-top: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--red, #ed111b);
+  border: 1px solid rgba(237, 17, 27, 0.4);
+  border-radius: 50%;
+  font-size: 20px;
+  transition:
+    transform 0.45s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    color 0.35s ease,
+    background 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.plan-card:hover .plan-icon {
+  color: #ffffff;
+  background: var(--red, #ed111b);
+  transform: rotate(15deg) scale(1.1);
+  box-shadow: 0 0 30px rgba(237, 17, 27, 0.25);
+}
+
+/* =====================================================
+   CARD TEXT
+===================================================== */
+
+.plan-card h3 {
+  position: relative;
+  z-index: 2;
+  margin: 24px 0 0;
+  font-family: "Manrope", sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.plan-title {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin-top: 7px;
+  color: var(--red, #ed111b);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+}
+
+.plan-description {
+  position: relative;
+  z-index: 2;
+  margin: 15px 0 0;
+  color: #999999;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+/* =====================================================
+   PRICE
+===================================================== */
+
+.plan-price {
+  position: relative;
+  z-index: 2;
+  margin-top: 23px;
+}
+
+.plan-price-top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 5px;
+}
+
+.plan-price-top del {
+  color: #777777;
+  font-size: 12px;
+  text-decoration-color: var(--red, #ed111b);
+}
+
+.plan-price-top span {
+  padding: 4px 8px;
+  color: var(--red, #ed111b);
+  background: rgba(237, 17, 27, 0.1);
+  border: 1px solid rgba(237, 17, 27, 0.3);
+  border-radius: 20px;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  animation: omtDiscountPulse 2.2s ease-in-out infinite;
+}
+
+.plan-price > strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+}
+
+.plan-price strong small {
+  color: #777777;
+  font-family: "DM Sans", sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* =====================================================
+   TAGS
+===================================================== */
+
+.plan-tags {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 20px;
+}
+
+.plan-tags span {
+  padding: 7px 10px;
+  color: #aaaaaa;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 30px;
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.7px;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.plan-card:hover .plan-tags span {
+  color: #ffffff;
+  border-color: rgba(237, 17, 27, 0.25);
+}
+
+/* =====================================================
+   VIEW PLAN BUTTON
+===================================================== */
+
+.view-plan-btn {
+  position: relative;
+  z-index: 3;
+  margin-top: auto;
+  padding: 25px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  color: #ffffff;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.view-plan-btn span {
+  color: var(--red, #ed111b);
+  font-size: 15px;
+  transition: transform 0.3s ease;
+}
+
+.view-plan-btn:hover span {
+  transform: translate(4px, -4px);
+}
+
+.plan-bottom-line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 4;
+  width: 0;
+  height: 3px;
+  background: var(--red, #ed111b);
+  transition: width 0.6s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.plan-card:hover .plan-bottom-line {
+  width: 100%;
+}
+
+/* =====================================================
+   MOST POPULAR / GOLD
+===================================================== */
+
+.plan-popular {
+  transform: translateY(-10px);
+  border-color: rgba(237, 17, 27, 0.5);
+  background: linear-gradient(
+    180deg,
+    rgba(237, 17, 27, 0.13),
+    rgba(255, 255, 255, 0.035)
+  );
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+}
+
+.plan-popular:hover {
+  transform: translateY(-20px);
+}
+
+.plan-popular .plan-price > strong {
+  color: var(--red, #ed111b);
+}
+
+.popular-badge {
+  position: absolute;
+  z-index: 5;
+  top: 18px;
+  right: -37px;
+  width: 150px;
+  padding: 7px 0;
+  color: #ffffff;
+  background: var(--red, #ed111b);
+  text-align: center;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  transform: rotate(38deg);
+  box-shadow: 0 10px 25px rgba(237, 17, 27, 0.18);
+}
+
+/* =====================================================
+   HELP ROW
+===================================================== */
+
+.plans-help {
+  position: relative;
+  z-index: 2;
+  margin-top: 45px;
+  padding-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.plans-help small {
+  color: var(--red, #ed111b);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.plans-help p {
+  margin: 5px 0 0;
+  color: #888888;
+  font-size: 12px;
+}
+
+.plans-help-arrow {
+  color: var(--red, #ed111b);
+  font-size: 25px;
+}
+
+/* =====================================================
+   PLAN MODAL OVERLAY
+===================================================== */
+
+.plan-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.84);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  animation: planModalFade 0.3s ease;
+}
+
+.plan-modal {
+  position: relative;
+  width: min(950px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 42px;
+  color: #ffffff;
+  background: #101010;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.65);
+  animation: planModalOpen 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.plan-modal::-webkit-scrollbar {
+  width: 7px;
+}
+
+.plan-modal::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+.plan-modal::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 10px;
+}
+
+.plan-modal-close {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 10;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #aaaaaa;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.plan-modal-close:hover {
+  color: #ffffff;
+  background: var(--red, #ed111b);
+  border-color: var(--red, #ed111b);
+  transform: rotate(90deg);
+}
+
+/* =====================================================
+   MODAL HEADER
+===================================================== */
+
+.plan-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-right: 55px;
+}
+
+.plan-modal-icon {
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--red, #ed111b);
+  border: 1px solid rgba(237, 17, 27, 0.4);
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.plan-modal-header span {
+  color: var(--red, #ed111b);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.plan-modal-header h2 {
+  margin: 4px 0 0;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+/* =====================================================
+   MODAL PRICE
+===================================================== */
+
+.plan-modal-price {
+  margin-top: 28px;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.plan-modal-price > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.plan-modal-price del {
+  color: #777777;
+  font-size: 13px;
+  text-decoration-color: var(--red, #ed111b);
+}
+
+.plan-modal-price > div span {
+  padding: 5px 9px;
+  color: var(--red, #ed111b);
+  border: 1px solid rgba(237, 17, 27, 0.3);
+  border-radius: 20px;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+.plan-modal-price > strong {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: var(--red, #ed111b);
+  font-family: "Manrope", sans-serif;
+  font-size: 31px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.plan-modal-price strong small {
+  color: #777777;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+/* =====================================================
+   WHAT'S INCLUDED
+===================================================== */
+
+.plan-modal-section-title {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #777777;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.plan-modal-section-title span {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background: var(--red, #ed111b);
+  border-radius: 50%;
+}
+
+.plan-includes-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.plan-include-group {
+  min-width: 0;
+  padding: 21px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+.plan-include-group:hover {
+  transform: translateY(-5px);
+  border-color: rgba(237, 17, 27, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.plan-include-group h3 {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.plan-include-group ul {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-include-group li {
+  margin-top: 9px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #999999;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.plan-include-group li span {
+  flex-shrink: 0;
+  color: var(--red, #ed111b);
+}
+
+/* =====================================================
+   OUTCOME
+===================================================== */
+
+.plan-outcome {
+  margin-top: 22px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  background: linear-gradient(
+    90deg,
+    rgba(237, 17, 27, 0.12),
+    rgba(237, 17, 27, 0.02)
+  );
+  border-left: 3px solid var(--red, #ed111b);
+}
+
+.plan-outcome small {
+  color: var(--red, #ed111b);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.plan-outcome strong {
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* =====================================================
+   MODAL FOOTER
+===================================================== */
+
+.plan-modal-footer {
+  margin-top: 27px;
+  padding-top: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.plan-modal-footer small {
+  color: #666666;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.plan-modal-footer p {
+  margin: 5px 0 0;
+  color: #aaaaaa;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.plan-modal-footer button {
+  padding: 15px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-shrink: 0;
+  color: #ffffff;
+  background: var(--red, #ed111b);
+  border: 0;
+  border-radius: 30px;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 12px 35px rgba(237, 17, 27, 0.25);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.plan-modal-footer button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(237, 17, 27, 0.4);
+}
+
+.plan-modal-footer button span {
+  transition: transform 0.3s ease;
+}
+
+.plan-modal-footer button:hover span {
+  transform: translate(4px, -4px);
+}
+
+/* =====================================================
+   FOCUS STATES
+===================================================== */
+
+.view-plan-btn:focus-visible,
+.plan-modal-close:focus-visible,
+.plan-modal-footer button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 4px;
+}
+
+/* =====================================================
+   ANIMATIONS
+===================================================== */
+
+@keyframes omtPlansGlow {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.12);
+    opacity: 1;
+  }
+}
+
+@keyframes omtDiscountPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(237, 17, 27, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 20px rgba(237, 17, 27, 0.2);
+  }
+}
+
+@keyframes planModalFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes planModalOpen {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1100px) {
+  .plans-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plan-popular {
+    transform: none;
+  }
+
+  .plan-popular:hover {
+    transform: translateY(-14px);
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 650px) {
+  .plans-heading {
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .plans-heading .section-label {
+    justify-content: flex-start;
+  }
+
+  .plans-heading p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-card {
+    min-height: 450px;
+    padding: 24px;
+  }
+
+  .plan-popular,
+  .plan-popular:hover {
+    transform: none;
+  }
+
+  .plans-help {
+    align-items: flex-start;
+  }
+
+  .plan-modal-overlay {
+    padding: 10px;
+    align-items: flex-end;
+  }
+
+  .plan-modal {
+    width: 100%;
+    max-height: 94vh;
+    padding: 28px 18px 24px;
+  }
+
+  .plan-modal-close {
+    right: 14px;
+    top: 14px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .plan-modal-header {
+    padding-right: 45px;
+  }
+
+  .plan-modal-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .plan-modal-price {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .plan-includes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .plan-modal-footer button {
+    width: 100%;
+  }
+}
+
+/* =====================================================
+   VERY SMALL MOBILE
+===================================================== */
+
+@media (max-width: 420px) {
+  .plans-heading h2 {
+    font-size: 40px;
+    letter-spacing: -2.5px;
+  }
+
+  .plan-card h3 {
+    font-size: 24px;
+  }
+
+  .plan-price > strong {
+    font-size: 29px;
+  }
+
+  .plan-modal-header h2 {
+    font-size: 27px;
+    letter-spacing: -1.5px;
+  }
+
+  .plan-modal-price > strong {
+    font-size: 28px;
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .plans-background-glow,
+  .plan-price-top span {
+    animation: none;
+  }
+
+  .plan-card,
+  .plan-card:hover,
+  .plan-popular,
+  .plan-popular:hover,
+  .plan-include-group:hover,
+  .plan-modal-footer button:hover {
+    transform: none;
+  }
+}
