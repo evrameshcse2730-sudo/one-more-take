@@ -314,7 +314,15 @@ const PRICING = {
 
 
 
-  "Video Editing": [
+  "AI Videos Generation": [
+    {
+      name: "AI Videos Generation (Per Minute)",
+      actual: 5000,
+      discount: 3500,
+    },
+  ],
+
+  "Video Editing": [
 
 
 

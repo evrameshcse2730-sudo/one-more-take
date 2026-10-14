@@ -10,7 +10,7 @@ const plans = [
       "Start creating professional and consistent content for your brand.",
     
     price: 9999,
-    Reels : "10 Reels  2  Ads",
+    Reels : "8 Reels  2  Ads",
     
     icon: "◉",
     tags: ["Planning", "Shoot", "Reels"],
@@ -26,7 +26,7 @@ const plans = [
       },
       {
         title: "Production",
-        items: ["Professional video shoot", "Professional photography","Reels : 10 Reels  2  Ads"],
+        items: ["Professional video shoot", "Professional photography","Reels : 8 Reels  2  Ads"],
       },
       {
         title: "Content Creation",
@@ -49,10 +49,10 @@ const plans = [
     title: "Authority Builder",
     description:
       "Build a recognizable personal brand through consistent strategic content.",
-    oldPrice: 34999,
-    price: 24999,
-    Reels : "20 Reels  4  Ads",
-    discount: "29% OFF ON First Shoot",
+    oldPrice: 24999,
+    price: 17499,
+    Reels : "15 Reels  3  Ads",
+    discount: "30% OFF ON First Shoot",
     icon: "✦",
     tags: ["Strategy", "Content", "Brand"],
     popular: true,
@@ -71,7 +71,7 @@ const plans = [
         items: [
           "Regular professional shoots",
           "Professional photography",
-          "Multiple content formats","Reels : 20 Reels  4  Ads"
+          "Multiple content formats","Reels : 15 Reels  3  Ads"
         ],
       },
       {
@@ -103,12 +103,12 @@ const plans = [
     title: "Digital Authority System",
     description:
       "Build a complete long-term content and personal brand ecosystem.",
-    oldPrice: 69999,
-    price: 49999,
-    Reels : "30 Reels  10  Ads",
-    discount: "29% OFF ON First Shoot",
+    oldPrice: 49999,
+    price: 34999,
+    Reels : "30 Reels  6  Ads",
+    discount: "30% OFF ON First Shoot",
     icon: "◎",
-    tags: ["90-Day Plan", "Long-form", "Growth"],
+    tags: ["30-Day Plan", "Long-form", "Growth"],
     includes: [
       {
         title: "Strategic Brand Development",
@@ -117,7 +117,7 @@ const plans = [
           "Professional positioning",
           "Audience definition",
           "Content architecture",
-          "90-day content roadmap",
+          "30-day content roadmap",
         ],
       },
       {
@@ -155,8 +155,8 @@ const plans = [
       "One team managing your complete strategy, production and content journey.",
     oldPrice: 129999,
     price: 99999,
-    Reels : "40 Reels  15  Ads",
-    discount: "23% OFF ON First Shoot",
+    Reels : "30 Reels  10  Ads",
+    discount: "Digital Marketing Service",
     icon: "◆",
     tags: ["Strategy", "Production", "Management"],
     includes: [
@@ -165,7 +165,7 @@ const plans = [
         items: [
           "Brand positioning",
           "Content strategy",
-          "90-day planning",
+          "30-day planning",
           "Campaign concepts",
           "Content architecture",
         ],
@@ -178,7 +178,7 @@ const plans = [
           "Educational videos",
           "Brand films",
           "Promotional videos",
-          "Long-form content","Reels : 40 Reels  15  Ads"
+          "Long-form content","Reels : 30 Reels  10  Ads", "Digital Marketing Service"
         ],
       },
       {
