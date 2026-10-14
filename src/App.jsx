@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
 
@@ -27,6 +28,8 @@ import Quotation from "./Components/Quotation/Quotation";
 import Contact from "./Components/Contact/Contact";
 
 import Footer from "./Components/Footer/Footer";
+import Gallery from "./Components/Gallery/Gallery";
+import GalleryPage from "./Components/Gallery/GalleryPage";
 
 function App() {
 
@@ -623,7 +626,7 @@ const handlePlanQuotation = (plan) => {
       <Work />
 
       <Experience />
-
+<Gallery />
       <Reviews />
 
       <Contact />
