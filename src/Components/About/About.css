@@ -1,0 +1,239 @@
+
+.about {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  align-items: center;
+  gap: 10%;
+  padding: 120px 8%;
+  overflow: hidden;
+  background: #f7f7f7;
+  color: #111;
+}
+
+.about-left,
+.about-right {
+  position: relative;
+  z-index: 1;
+}
+
+.about .section-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+  color: #555;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.about .section-label > span {
+  display: inline-block;
+  width: 28px;
+  height: 3px;
+  background: #ed252d;
+}
+
+.about-left h2 {
+  margin: 0;
+  font-size: clamp(48px, 6.5vw, 90px);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -4px;
+}
+
+.about-left h2 em {
+  color: #ed252d;
+  font-style: normal;
+  position: relative;
+}
+
+.about-left h2 em::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -7px;
+  width: 75%;
+  height: 4px;
+  background: #ed252d;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s ease;
+}
+
+.about-left:hover h2 em::after {
+  transform: scaleX(1);
+}
+
+.about-decoration {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: 50px;
+  color: #d8d8d8;
+}
+
+.about-decoration span {
+  font-size: 56px;
+  font-weight: 900;
+  letter-spacing: -4px;
+}
+
+.about-decoration i {
+  display: block;
+  width: 75px;
+  height: 2px;
+  background: #ed252d;
+}
+
+.about-right {
+  padding: 10px 0;
+}
+
+.about-right p {
+  margin: 0 0 22px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.95;
+}
+
+.about-right .large-copy {
+  margin-bottom: 25px;
+  color: #171717;
+  font-size: clamp(23px, 2.5vw, 34px);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.8px;
+}
+
+.about-signature {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 35px;
+  padding-left: 18px;
+  border-left: 3px solid #ed252d;
+}
+
+.about-signature span {
+  color: #777;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.about-signature b {
+  color: #ed252d;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+}
+
+.about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 30px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ed252d;
+  color: #111;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.about-link span {
+  color: #ed252d;
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.about-link:hover {
+  color: #ed252d;
+}
+
+.about-link:hover span {
+  transform: translate(4px, -4px);
+}
+
+/* Scroll reveal animation */
+.about .reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.about .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about .delay-1 {
+  transition-delay: 0.18s;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: 45px;
+    padding: 90px 7%;
+  }
+
+  .about-left h2 {
+    font-size: clamp(52px, 9vw, 78px);
+  }
+
+  .about-decoration {
+    margin-top: 25px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .about {
+    gap: 30px;
+    padding: 75px 6%;
+  }
+
+  .about .section-label {
+    margin-bottom: 22px;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .about-left h2 {
+    font-size: clamp(43px, 11vw, 65px);
+    letter-spacing: -2.5px;
+  }
+
+  .about-decoration span {
+    font-size: 42px;
+  }
+
+  .about-right .large-copy {
+    font-size: 24px;
+  }
+
+  .about-right p {
+    font-size: 13px;
+  }
+
+  .about-signature {
+    margin-top: 25px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about *,
+  .about .reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1;
+    transform: none;
+  }
+}

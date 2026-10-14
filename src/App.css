@@ -4872,3 +4872,205 @@ img:not(.real-camera) {
     transform: none !important;
   }
 }
+
+
+/* =========================================
+   ONE MORE TAKE - GLOBAL ANIMATIONS
+========================================= */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 90px;
+}
+
+/* Marquee continuous animation */
+.marquee {
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 22s linear infinite !important;
+  will-change: transform;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused !important;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Scroll reveal for all sections */
+.reveal {
+  opacity: 0;
+  transform: translateY(45px);
+  filter: blur(3px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    filter 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* Staggered entrance */
+.delay-1 {
+  transition-delay: 0.1s;
+}
+
+.delay-2 {
+  transition-delay: 0.2s;
+}
+
+.delay-3 {
+  transition-delay: 0.3s;
+}
+
+.delay-4 {
+  transition-delay: 0.4s;
+}
+
+/* Section headings */
+section h2 {
+  transition:
+    color 0.35s ease,
+    transform 0.5s ease;
+}
+
+section h2:hover {
+  transform: translateX(4px);
+}
+
+/* Cards hover animation */
+.service-card,
+.work-card,
+.review-card,
+.plan-card,
+.experience-card {
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.service-card:hover,
+.work-card:hover,
+.review-card:hover,
+.plan-card:hover,
+.experience-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+}
+
+/* Buttons */
+button,
+.primary-btn,
+.nav-cta,
+.whatsapp-btn {
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+button:hover,
+.primary-btn:hover,
+.nav-cta:hover,
+.whatsapp-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Contact items */
+.contact-item {
+  transition:
+    transform 0.35s ease,
+    color 0.35s ease;
+}
+
+.contact-item:hover {
+  transform: translateX(6px);
+}
+
+/* Footer links */
+.footer-nav a,
+.footer-social a {
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.footer-nav a:hover,
+.footer-social a:hover {
+  transform: translateY(-3px);
+}
+
+/* Mobile animation adjustment */
+@media (max-width: 600px) {
+  .reveal {
+    transform: translateY(25px);
+  }
+
+  .reveal.visible {
+    transform: translateY(0);
+  }
+
+  .marquee-track {
+    animation-duration: 16s !important;
+  }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Hero section white background */
+.hero {
+  background: #ffffff !important;
+  color: #111111;
+}
+
+/* Hero background decorative elements */
+.hero::before,
+.hero::after {
+  background-color: transparent;
+}
+
+/* Hero text colors */
+.hero-title,
+.hero-description,
+.hero-script {
+  color: #111111;
+}
+
+/* Hero secondary text */
+.hero-content p {
+  color: #666666;
+}

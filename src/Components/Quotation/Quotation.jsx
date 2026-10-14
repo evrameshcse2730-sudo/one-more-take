@@ -1,10 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 
+
+
 import html2canvas from "html2canvas";
+
+
 
 import { jsPDF } from "jspdf";
 
+
+
 import "./Quotation.css";
+
+
+
+
 
 
 
@@ -12,751 +22,1517 @@ const LOGO = "/One More Take Logo.png";
 
 
 
+
+
+
+
 // Replace with your actual One More Take WhatsApp number
+
+
 
 const OWNER_WHATSAPP = "917331132227";
 
 
 
+
+
+
+
 const PRICING = {
 
-  "Promotional Shoot": [
 
-    {
 
-      name: "Product Promotional Video",
+  "Promotional Shoot": [
 
-      actual: 20000,
 
-      discount: 15000,
 
-    },
+    {
 
-    {
 
-      name: "Brand Promotional Video",
 
-      actual: 30000,
+      name: "Product Promotional Video",
 
-      discount: 25000,
 
-    },
 
-    {
+      actual: 20000,
 
-      name: "Large Campaign / Custom Shoot",
 
-      negotiate: true,
 
-    },
+      discount: 15000,
 
-  ],
 
 
+    },
 
-  "Social Reels": [
 
-    {
 
-      name: "30 Seconds Reel",
+    {
 
-      actual: 2500,
 
-      discount: 1999,
 
-    },
+      name: "Brand Promotional Video",
 
-    {
 
-      name: "60 Seconds Reel",
 
-      actual: 4000,
+      actual: 30000,
 
-      discount: 2999,
 
-    },
 
-    {
+      discount: 25000,
 
-      name: "Bulk / Monthly Reels",
 
-      negotiate: true,
 
-    },
+    },
 
-  ],
 
 
+    {
 
-  Events: [
 
-    {
 
-      name: "2 Hours Coverage",
+      name: "Large Campaign / Custom Shoot",
 
-      actual: 12000,
 
-      discount: 10000,
 
-    },
+      negotiate: true,
 
-    {
 
-      name: "4 Hours Coverage",
 
-      actual: 22000,
+    },
 
-      discount: 18000,
 
-    },
 
-    {
+  ],
 
-      name: "Full Day / Large Event",
 
-      negotiate: true,
 
-    },
 
-  ],
 
 
 
-  Podcasts: [
+  "Social Reels": [
 
-    {
 
-      name: "Single Episode",
 
-      actual: 10000,
+    {
 
-      discount: 8000,
 
-    },
 
-    {
+      name: "30 Seconds Reel",
 
-      name: "4 Episode Package",
 
-      actual: 32000,
 
-      discount: 28000,
+      actual: 2500,
 
-    },
 
-    {
 
-      name: "Monthly / Multi-Camera Podcast",
+      discount: 1999,
 
-      negotiate: true,
 
-    },
 
-  ],
+    },
 
 
 
-  "Video Editing": [
+    {
 
-    {
 
-      name: "Short-form Editing",
 
-      actual: 2500,
+      name: "60 Seconds Reel",
 
-      discount: 2000,
 
-    },
 
-    {
+      actual: 4000,
 
-      name: "Standard Video Editing",
 
-      actual: 6000,
 
-      discount: 5000,
+      discount: 2999,
 
-    },
 
-    {
 
-      name: "Advanced / Custom Editing",
+    },
 
-      negotiate: true,
 
-    },
 
-  ],
+    {
+
+
+
+      name: "Bulk / Monthly Reels",
+
+
+
+      negotiate: true,
+
+
+
+    },
+
+
+
+  ],
+
+
+
+
+
+
+
+  Events: [
+
+
+
+    {
+
+
+
+      name: "2 Hours Coverage",
+
+
+
+      actual: 12000,
+
+
+
+      discount: 10000,
+
+
+
+    },
+
+
+
+    {
+
+
+
+      name: "4 Hours Coverage",
+
+
+
+      actual: 22000,
+
+
+
+      discount: 18000,
+
+
+
+    },
+
+
+
+    {
+
+
+
+      name: "Full Day / Large Event",
+
+
+
+      negotiate: true,
+
+
+
+    },
+
+
+
+  ],
+
+
+
+
+
+
+
+  Podcasts: [
+
+
+
+    {
+
+
+
+      name: "Single Episode",
+
+
+
+      actual: 10000,
+
+
+
+      discount: 8000,
+
+
+
+    },
+
+
+
+    {
+
+
+
+      name: "4 Episode Package",
+
+
+
+      actual: 32000,
+
+
+
+      discount: 28000,
+
+
+
+    },
+
+
+
+    {
+
+
+
+      name: "Monthly / Multi-Camera Podcast",
+
+
+
+      negotiate: true,
+
+
+
+    },
+
+
+
+  ],
+
+
+
+
+
+
+
+  "Video Editing": [
+
+
+
+    {
+
+
+
+      name: "Short-form Editing",
+
+
+
+      actual: 2500,
+
+
+
+      discount: 2000,
+
+
+
+    },
+
+
+
+    {
+
+
+
+      name: "Standard Video Editing",
+
+
+
+      actual: 6000,
+
+
+
+      discount: 5000,
+
+
+
+    },
+
+
+
+    {
+
+
+
+      name: "Advanced / Custom Editing",
+
+
+
+      negotiate: true,
+
+
+
+    },
+
+
+
+  ],
+
+
 
 };
+
+
+
+
 
 
 
 const formatCurrency = (value) => {
 
-  return `₹${Number(value || 0).toLocaleString("en-IN")}`;
+
+
+  return `₹${Number(value || 0).toLocaleString("en-IN")}`;
+
+
 
 };
+
+
+
+
 
 
 
 const getToday = () => {
 
-  const date = new Date();
+
+
+  const date = new Date();
 
 
 
-  return date.toLocaleDateString("en-IN", {
 
-    day: "2-digit",
 
-    month: "short",
 
-    year: "numeric",
 
-  });
+  return date.toLocaleDateString("en-IN", {
+
+
+
+    day: "2-digit",
+
+
+
+    month: "short",
+
+
+
+    year: "numeric",
+
+
+
+  });
+
+
 
 };
 
 
 
+
+
+
+
 function Quotation({ selectedPlan }) {
 
-  const [preparedBy, setPreparedBy] = useState("");
+
+
+  const [preparedBy, setPreparedBy] = useState("");
 
 
 
-  const [client, setClient] = useState({
-
-    name: "",
-
-    company: "",
-
-    whatsapp: "",
-
-    email: "",
-
-  });
 
 
 
-  const [selectedService, setSelectedService] = useState("Promotional Shoot");
 
-  const [selectedType, setSelectedType] = useState(null);
-
-
-
-  const [quantity, setQuantity] = useState(1);
+  const [client, setClient] = useState({
 
 
 
-  const [quotationItems, setQuotationItems] = useState([]);
+    name: "",
 
 
 
-  const [projectDetails, setProjectDetails] = useState("");
+    company: "",
 
 
 
-  const [gstEnabled, setGstEnabled] = useState(false);
+    whatsapp: "",
 
 
 
-  const [quotationNumber, setQuotationNumber] = useState("");
+    email: "",
 
 
 
-  const [generated, setGenerated] = useState(false);
+  });
 
-  useEffect(() => {
-    if (!selectedPlan) return;
 
-    const actualPrice =
-      Number(
-        String(selectedPlan.oldPrice ?? "")
-          .replace(/[₹,\s]/g, "")
-      ) || 0;
 
-    const offerPrice =
-      Number(
-        String(selectedPlan.price ?? "")
-          .replace(/[₹,\s]/g, "")
-      ) || 0;
 
-    const planItem = {
-      service: `${selectedPlan.name} PLAN`,
-      name: `${selectedPlan.name} — ${selectedPlan.title}`,
-      actual: actualPrice,
-      discount: offerPrice,
-      quantity: 1,
-      negotiate: false,
-      isPlan: true,
-    };
 
-    setQuotationItems([planItem]);
-    setSelectedService("");
-    setSelectedType(null);
-    setQuantity(1);
 
-    setProjectDetails(
-      `${selectedPlan.name} PLAN — ${selectedPlan.title}
+
+  const [selectedService, setSelectedService] = useState("Promotional Shoot");
+
+
+
+  const [selectedType, setSelectedType] = useState(null);
+
+
+
+
+
+
+
+  const [quantity, setQuantity] = useState(1);
+
+
+
+
+
+
+
+  const [quotationItems, setQuotationItems] = useState([]);
+
+
+
+
+
+
+
+  const [projectDetails, setProjectDetails] = useState("");
+
+
+
+
+
+
+
+  const [gstEnabled, setGstEnabled] = useState(false);
+
+
+
+
+
+
+
+  const [quotationNumber, setQuotationNumber] = useState("");
+
+
+
+
+
+
+
+  const [generated, setGenerated] = useState(false);
+  const [customQuotation, setCustomQuotation] = useState(false);
+
+
+
+  useEffect(() => {
+
+    if (!selectedPlan) return;
+
+
+
+    const actualPrice =
+
+      Number(
+
+        String(selectedPlan.oldPrice ?? "")
+
+          .replace(/[₹,\s]/g, "")
+
+      ) || 0;
+
+
+
+    const offerPrice =
+
+      Number(
+
+        String(selectedPlan.price ?? "")
+
+          .replace(/[₹,\s]/g, "")
+
+      ) || 0;
+
+
+
+    const planItem = {
+
+      service: `${selectedPlan.name} PLAN`,
+
+      name: `${selectedPlan.name} — ${selectedPlan.title}`,
+
+      actual: actualPrice,
+
+      discount: offerPrice,
+
+      quantity: 1,
+
+      negotiate: false,
+
+      isPlan: true,
+
+    };
+
+
+
+    setQuotationItems([planItem]);
+
+    setSelectedService("");
+
+    setSelectedType(null);
+
+    setQuantity(1);
+
+
+
+    setProjectDetails(
+
+      `${selectedPlan.name} PLAN — ${selectedPlan.title}
+
+
 
 Selected monthly content plan.
 
+
+
 ${selectedPlan.description || selectedPlan.text || ""}`
-    );
 
+    );
+
+
+
+    setGenerated(false);
+
+  }, [selectedPlan]);
+
+
+
+
+
+
+
+  const serviceTypes = selectedService
+
+
+
+    ? PRICING[selectedService]
+
+
+
+    : [];
+
+
+
+
+
+
+
+  const actualTotal = useMemo(() => {
+
+
+
+    return quotationItems.reduce((sum, item) => {
+
+
+
+      if (item.negotiate) return sum;
+
+
+
+
+
+
+
+      return sum + item.actual * item.quantity;
+
+
+
+    }, 0);
+
+
+
+  }, [quotationItems]);
+
+
+
+
+
+
+
+  const subtotal = useMemo(() => {
+
+
+
+    return quotationItems.reduce((sum, item) => {
+
+
+
+      if (item.negotiate) return sum;
+
+
+
+
+
+
+
+      return sum + item.discount * item.quantity;
+
+
+
+    }, 0);
+
+
+
+  }, [quotationItems]);
+
+
+
+
+
+
+
+  const savings = actualTotal - subtotal;
+
+
+
+
+
+
+
+  const gstAmount = gstEnabled ? subtotal * 0.18 : 0;
+
+
+
+
+
+
+
+  const grandTotal = subtotal + gstAmount;
+
+
+
+
+
+
+
+  const handleCustomQuotation = () => {
+    setCustomQuotation(true);
+    setPreparedBy("");
+    setSelectedService("");
+    setSelectedType(null);
+    setQuantity(1);
+    setQuotationItems([]);
+    setProjectDetails("");
+    setGstEnabled(false);
+    setQuotationNumber("");
     setGenerated(false);
-  }, [selectedPlan]);
-
-
-
-  const serviceTypes = selectedService
-
-    ? PRICING[selectedService]
-
-    : [];
-
-
-
-  const actualTotal = useMemo(() => {
-
-    return quotationItems.reduce((sum, item) => {
-
-      if (item.negotiate) return sum;
-
-
-
-      return sum + item.actual * item.quantity;
-
-    }, 0);
-
-  }, [quotationItems]);
-
-
-
-  const subtotal = useMemo(() => {
-
-    return quotationItems.reduce((sum, item) => {
-
-      if (item.negotiate) return sum;
-
-
-
-      return sum + item.discount * item.quantity;
-
-    }, 0);
-
-  }, [quotationItems]);
-
-
-
-  const savings = actualTotal - subtotal;
-
-
-
-  const gstAmount = gstEnabled ? subtotal * 0.18 : 0;
-
-
-
-  const grandTotal = subtotal + gstAmount;
-
-
+  };
 
   const handlePreparedBy = (role) => {
 
-    setPreparedBy(role);
 
-    setSelectedService("");
-    setSelectedType(null);
 
-    // Keep the selected package when quotation comes from Plans.
-    if (!selectedPlan) {
-      setQuotationItems([]);
-      setProjectDetails("");
-    }
+    setPreparedBy(role);
 
-    setGenerated(false);
 
-  };
 
+    setSelectedService("");
 
+    setSelectedType(null);
 
-  const handleClientChange = (e) => {
 
-    const { name, value } = e.target;
 
+    // Keep the selected package when quotation comes from Plans.
 
+    if (!selectedPlan || customQuotation) {
 
-    setClient((prev) => ({
+      setQuotationItems([]);
 
-      ...prev,
+      setProjectDetails("");
 
-      [name]: value,
+    }
 
-    }));
 
-  };
 
+    setGenerated(false);
 
 
-  const handleServiceSelect = (service) => {
 
-    setSelectedService(service);
-    setSelectedType(null);
-    setQuantity(1);
+  };
 
-    setTimeout(() => {
-      document
-        .getElementById("quotation-service-details")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-    }, 100);
 
-  };
 
 
 
-  const handleTypeSelect = (type) => {
 
-    setSelectedType(type);
 
-    setQuantity(1);
+  const handleClientChange = (e) => {
 
-  };
 
 
+    const { name, value } = e.target;
 
-  const addToQuotation = () => {
 
-    if (!selectedType) return;
 
 
 
-    const existingIndex = quotationItems.findIndex(
 
-      (item) =>
 
-        item.service === selectedService &&
+    setClient((prev) => ({
 
-        item.name === selectedType.name
 
-    );
 
+      ...prev,
 
 
-    if (existingIndex !== -1) {
 
-      const updated = [...quotationItems];
+      [name]: value,
 
 
 
-      updated[existingIndex].quantity += Number(quantity);
+    }));
 
 
 
-      setQuotationItems(updated);
+  };
 
-    } else {
 
-      setQuotationItems([
 
-        ...quotationItems,
 
-        {
 
-          service: selectedService,
 
-          name: selectedType.name,
 
-          actual: selectedType.actual || 0,
+  const handleServiceSelect = (service) => {
 
-          discount: selectedType.discount || 0,
 
-          quantity: Number(quantity),
 
-          negotiate: !!selectedType.negotiate,
+    setSelectedService(service);
 
-        },
+    setSelectedType(null);
 
-      ]);
+    setQuantity(1);
 
-    }
 
 
+    setTimeout(() => {
 
-    setSelectedType(null);
+      document
 
-    setQuantity(1);
+        .getElementById("quotation-service-details")
 
-  };
+        ?.scrollIntoView({
 
+          behavior: "smooth",
 
+          block: "center",
 
-  const updateItemQuantity = (index, value) => {
+        });
 
-    const updated = [...quotationItems];
+    }, 100);
 
 
 
-    updated[index].quantity = Math.max(1, Number(value));
+  };
 
 
 
-    setQuotationItems(updated);
 
-  };
 
 
 
-  const removeItem = (index) => {
+  const handleTypeSelect = (type) => {
 
-    setQuotationItems(
 
-      quotationItems.filter((_, itemIndex) => itemIndex !== index)
 
-    );
+    setSelectedType(type);
 
-  };
 
 
+    setQuantity(1);
 
-  const generateQuotation = () => {
 
-    if (!preparedBy) {
 
-      alert("Please select Client or Owner.");
+  };
 
-      return;
 
-    }
 
 
 
-    if (!client.name.trim()) {
 
-      alert("Please enter the client name.");
 
-      return;
+  const addToQuotation = () => {
 
-    }
 
 
+    if (!selectedType) return;
 
-    if (quotationItems.length === 0) {
 
-      alert("Please add at least one service.");
 
-      return;
 
-    }
 
 
 
-    const number = `OMT-${Date.now().toString().slice(-6)}`;
+    const existingIndex = quotationItems.findIndex(
 
 
 
-    setQuotationNumber(number);
+      (item) =>
 
-    setGenerated(true);
 
-  };
 
+        item.service === selectedService &&
 
 
-  useEffect(() => {
-    if (!generated) return;
 
-    const frame = requestAnimationFrame(() => {
-      const preview = document.getElementById("quotation-preview");
+        item.name === selectedType.name
 
-      if (preview) {
-        preview.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    });
 
-    return () => cancelAnimationFrame(frame);
-  }, [generated]);
 
-  const downloadPDF = async () => {
+    );
 
-    const element = document.getElementById("quotation-pdf");
 
 
 
-    if (!element) return;
 
 
 
-    const canvas = await html2canvas(element, {
+    if (existingIndex !== -1) {
 
-      scale: 2,
 
-      backgroundColor: "#ffffff",
 
-      useCORS: true,
+      const updated = [...quotationItems];
 
-    });
 
 
 
-    const imgData = canvas.toDataURL("image/png");
 
 
 
-    const pdf = new jsPDF("p", "mm", "a4");
+      updated[existingIndex].quantity += Number(quantity);
 
 
 
-    const pdfWidth = 210;
 
-    const pdfHeight = 297;
 
 
 
-    const imgWidth = pdfWidth;
+      setQuotationItems(updated);
 
-    const imgHeight =
 
-      (canvas.height * imgWidth) / canvas.width;
 
+    } else {
 
 
-    let heightLeft = imgHeight;
 
-    let position = 0;
+      setQuotationItems([
 
 
 
-    pdf.addImage(
+        ...quotationItems,
 
-      imgData,
 
-      "PNG",
 
-      0,
+        {
 
-      position,
 
-      imgWidth,
 
-      imgHeight
+          service: selectedService,
 
-    );
 
 
+          name: selectedType.name,
 
-    heightLeft -= pdfHeight;
 
 
+          actual: selectedType.actual || 0,
 
-    while (heightLeft > 0) {
 
-      position -= pdfHeight;
 
+          discount: selectedType.discount || 0,
 
 
-      pdf.addPage();
 
+          quantity: Number(quantity),
 
 
-      pdf.addImage(
 
-        imgData,
+          negotiate: !!selectedType.negotiate,
 
-        "PNG",
 
-        0,
 
-        position,
+        },
 
-        imgWidth,
 
-        imgHeight
 
-      );
+      ]);
 
 
 
-      heightLeft -= pdfHeight;
+    }
 
-    }
 
 
 
-    pdf.save(
 
-      `${quotationNumber || "One-More-Take-Quotation"}.pdf`
 
-    );
 
-  };
+    setSelectedType(null);
 
 
 
-  const sendWhatsApp = () => {
+    setQuantity(1);
 
-    const destination =
 
-      preparedBy === "client"
 
-        ? OWNER_WHATSAPP
+  };
 
-        : client.whatsapp;
 
 
 
-    if (!destination) {
 
-      alert(
 
-        preparedBy === "client"
 
-          ? "Please configure the owner WhatsApp number."
+  const updateItemQuantity = (index, value) => {
 
-          : "Please enter client WhatsApp number."
 
-      );
 
+    const updated = [...quotationItems];
 
 
-      return;
 
-    }
 
 
 
-    const serviceText = quotationItems
 
-      .map((item) => {
+    updated[index].quantity = Math.max(1, Number(value));
 
-        const price = item.negotiate
 
-          ? "Negotiable"
 
-          : formatCurrency(item.discount);
 
 
 
-        return `${item.service} - ${item.name} x${item.quantity} - ${price}`;
 
-      })
+    setQuotationItems(updated);
 
-      .join("\n");
 
 
+  };
 
-    const message = `
+
+
+
+
+
+
+  const removeItem = (index) => {
+
+
+
+    setQuotationItems(
+
+
+
+      quotationItems.filter((_, itemIndex) => itemIndex !== index)
+
+
+
+    );
+
+
+
+  };
+
+
+
+
+
+
+
+  const generateQuotation = () => {
+
+
+
+    if (!preparedBy) {
+
+
+
+      alert("Please select Client or Owner.");
+
+
+
+      return;
+
+
+
+    }
+
+
+
+
+
+
+
+    if (!client.name.trim()) {
+
+
+
+      alert("Please enter the client name.");
+
+
+
+      return;
+
+
+
+    }
+
+
+
+
+
+
+
+    if (quotationItems.length === 0) {
+
+
+
+      alert("Please add at least one service.");
+
+
+
+      return;
+
+
+
+    }
+
+
+
+
+
+
+
+    const number = `OMT-${Date.now().toString().slice(-6)}`;
+
+
+
+
+
+
+
+    setQuotationNumber(number);
+
+
+
+    setGenerated(true);
+
+
+
+  };
+
+
+
+
+
+
+
+  useEffect(() => {
+
+    if (!generated) return;
+
+
+
+    const frame = requestAnimationFrame(() => {
+
+      const preview = document.getElementById("quotation-preview");
+
+
+
+      if (preview) {
+
+        preview.scrollIntoView({
+
+          behavior: "smooth",
+
+          block: "start",
+
+        });
+
+      }
+
+    });
+
+
+
+    return () => cancelAnimationFrame(frame);
+
+  }, [generated]);
+
+
+
+  const downloadPDF = async () => {
+
+
+
+    const element = document.getElementById("quotation-pdf");
+
+
+
+
+
+
+
+    if (!element) return;
+
+
+
+
+
+
+
+    const canvas = await html2canvas(element, {
+
+
+
+      scale: 2,
+
+
+
+      backgroundColor: "#ffffff",
+
+
+
+      useCORS: true,
+
+
+
+    });
+
+
+
+
+
+
+
+    const imgData = canvas.toDataURL("image/png");
+
+
+
+
+
+
+
+    const pdf = new jsPDF("p", "mm", "a4");
+
+
+
+
+
+
+
+    const pdfWidth = 210;
+
+
+
+    const pdfHeight = 297;
+
+
+
+
+
+
+
+    const imgWidth = pdfWidth;
+
+
+
+    const imgHeight =
+
+
+
+      (canvas.height * imgWidth) / canvas.width;
+
+
+
+
+
+
+
+    let heightLeft = imgHeight;
+
+
+
+    let position = 0;
+
+
+
+
+
+
+
+    pdf.addImage(
+
+
+
+      imgData,
+
+
+
+      "PNG",
+
+
+
+      0,
+
+
+
+      position,
+
+
+
+      imgWidth,
+
+
+
+      imgHeight
+
+
+
+    );
+
+
+
+
+
+
+
+    heightLeft -= pdfHeight;
+
+
+
+
+
+
+
+    while (heightLeft > 0) {
+
+
+
+      position -= pdfHeight;
+
+
+
+
+
+
+
+      pdf.addPage();
+
+
+
+
+
+
+
+      pdf.addImage(
+
+
+
+        imgData,
+
+
+
+        "PNG",
+
+
+
+        0,
+
+
+
+        position,
+
+
+
+        imgWidth,
+
+
+
+        imgHeight
+
+
+
+      );
+
+
+
+
+
+
+
+      heightLeft -= pdfHeight;
+
+
+
+    }
+
+
+
+
+
+
+
+    pdf.save(
+
+
+
+      `${quotationNumber || "One-More-Take-Quotation"}.pdf`
+
+
+
+    );
+
+
+
+  };
+
+
+
+
+
+
+
+  const sendWhatsApp = () => {
+
+
+
+    const destination =
+
+
+
+      preparedBy === "client"
+
+
+
+        ? OWNER_WHATSAPP
+
+
+
+        : client.whatsapp;
+
+
+
+
+
+
+
+    if (!destination) {
+
+
+
+      alert(
+
+
+
+        preparedBy === "client"
+
+
+
+          ? "Please configure the owner WhatsApp number."
+
+
+
+          : "Please enter client WhatsApp number."
+
+
+
+      );
+
+
+
+
+
+
+
+      return;
+
+
+
+    }
+
+
+
+
+
+
+
+    const serviceText = quotationItems
+
+
+
+      .map((item) => {
+
+
+
+        const price = item.negotiate
+
+
+
+          ? "Negotiable"
+
+
+
+          : formatCurrency(item.discount);
+
+
+
+
+
+
+
+        return `${item.service} - ${item.name} x${item.quantity} - ${price}`;
+
+
+
+      })
+
+
+
+      .join("\n");
+
+
+
+
+
+
+
+    const message = `
+
+
 
 ONE MORE TAKE
 
+
+
 QUOTATION
+
+
+
+
 
 
 
@@ -764,2329 +1540,4666 @@ Quotation No: ${quotationNumber}
 
 
 
+
+
+
+
 Prepared By:
+
+
 
 ${preparedBy === "client" ? "Client" : "Owner"}
 
 
 
+
+
+
+
 Client:
+
+
 
 ${client.name}
 
 
 
+
+
+
+
 Company:
+
+
 
 ${client.company || "-"}
 
 
 
+
+
+
+
 Services:
+
+
 
 ${serviceText}
 
+
+
 ${selectedPlan ? `Selected Plan:\n${selectedPlan.name} — ${selectedPlan.title}\n` : ""}
 
+
+
 Subtotal:
+
+
 
 ${formatCurrency(subtotal)}
 
 
 
+
+
+
+
 GST:
+
+
 
 ${formatCurrency(gstAmount)}
 
 
 
+
+
+
+
 Grand Total:
+
+
 
 ${formatCurrency(grandTotal)}
 
 
 
+
+
+
+
 Project Details:
+
+
 
 ${projectDetails || "-"}
 
 
 
+
+
+
+
 Please find the quotation details above.
 
-    `.trim();
 
 
+    `.trim();
 
-    const url = `https://wa.me/${destination}?text=${encodeURIComponent(
 
-      message
 
-    )}`;
 
 
 
-    window.open(url, "_blank");
 
-  };
+    const url = `https\://wa.me/${destination}?text=${encodeURIComponent(
 
 
 
-  return (
+      message
 
-    <section className="omt-quotation-section">
 
 
+    )}`;
 
-      <div className="omt-quotation-container">
 
 
 
-        {/* HEADER */}
 
 
 
-        <div className="omt-quotation-header">
+    window.open(url, "_blank");
 
 
 
-          <div>
+  };
 
-            <span className="omt-eyebrow">
 
-              ONE MORE TAKE
 
-            </span>
 
 
 
-            <h2>
 
-              GET A
+  return (
 
-              <span> QUOTATION.</span>
 
-            </h2>
 
+    <section className="omt-quotation-section">
 
 
-            <p>
 
-              Build your project quotation
 
-              in a few simple steps.
 
-            </p>
 
-          </div>
 
+      <div className="omt-quotation-container">
 
 
-          <div className="omt-quotation-number-top">
 
-            QUOTATION
 
-            <strong>
 
-              {quotationNumber || "DRAFT"}
 
-            </strong>
 
-          </div>
+        {/* HEADER */}
 
 
 
-        </div>
 
 
 
 
+        <div className="omt-quotation-header">
 
-        {selectedPlan && (
-          <div className="omt-selected-plan-banner">
-            <div className="omt-selected-plan-info">
-              <small>SELECTED CONTENT PLAN</small>
-              <h3>{selectedPlan.name}</h3>
-              <p>{selectedPlan.title}</p>
-            </div>
 
-            <div className="omt-selected-plan-price">
-              <del>
-                {formatCurrency(
-                  Number(
-                    String(selectedPlan.oldPrice ?? "")
-                      .replace(/[₹,\s]/g, "")
-                  ) || 0
-                )}
-              </del>
 
-              <strong>
-                {formatCurrency(
-                  Number(
-                    String(selectedPlan.price ?? "")
-                      .replace(/[₹,\s]/g, "")
-                  ) || 0
-                )}
-              </strong>
 
-              <span>{selectedPlan.discount}</span>
-            </div>
-          </div>
-        )}
 
 
-        {/* ROLE */}
 
+          <div>
 
 
-        <div className="omt-quote-card">
 
+            <span className="omt-eyebrow">
 
 
-          <div className="omt-step-title">
 
+              ONE MORE TAKE
 
 
-            <span>01</span>
 
+            </span>
 
 
-            <div>
 
-              <small>START HERE</small>
 
-              <h3>
-                Generate Your Custom Quotation
-              </h3>
 
-              <p className="omt-step-description">
-                Choose how you'd like to prepare your quotation.
-              </p>
 
-            </div>
 
+            <h2>
 
 
-          </div>
 
+              GET A
 
 
 
+              <span> QUOTATION.</span>
 
-          <div className="omt-prepared-options">
 
 
+            </h2>
 
-            {/* MAIN CLIENT OPTION */}
 
 
+
+
+
+
+            <p>
+
+
+
+              Build your project quotation
+
+
+
+              in a few simple steps.
+
+
+
+            </p>
 
             <button
-
               type="button"
-
-              className={
-
-                preparedBy === "client"
-
-                  ? "omt-client-main active"
-
-                  : "omt-client-main"
-
-              }
-
-              onClick={() =>
-
-                handlePreparedBy("client")
-
-              }
-
+              className="omt-custom-quotation-btn"
+              onClick={handleCustomQuotation}
             >
-
-
-
-              <div className="omt-client-main-content">
-
-
-
-                <span>01</span>
-
-
-
-                <strong>
-
-                  I AM THE CLIENT
-
-                </strong>
-
-
-
-                <small>
-
-                  Prepare a quotation and
-
-                  send it to One More Take.
-
-                </small>
-
-
-
-              </div>
-
-
-
-              <b>→</b>
-
-
-
+              + CUSTOM QUOTATION
             </button>
 
 
+          </div>
 
 
 
-            {/* SMALL OWNER OPTION */}
 
 
 
-            <button
 
-              type="button"
+          <div className="omt-quotation-number-top">
 
-              className={
 
-                preparedBy === "owner"
 
-                  ? "omt-owner-small active"
+            QUOTATION
 
-                  : "omt-owner-small"
 
-              }
 
-              onClick={() =>
+            <strong>
 
-                handlePreparedBy("owner")
 
-              }
 
-            >
+              {quotationNumber || "DRAFT"}
 
 
 
-              <span>OWNER MODE</span>
+            </strong>
 
 
 
-              <b>→</b>
+          </div>
 
 
 
-            </button>
 
 
 
-          </div>
 
+        </div>
 
 
-        </div>
 
 
 
 
 
-        {preparedBy && (
 
-          <>
 
 
 
-            {/* CLIENT DETAILS */}
+        {selectedPlan && !customQuotation && (
 
+          <div className="omt-selected-plan-banner">
 
+            <div className="omt-selected-plan-info">
 
-            <div className="omt-quote-card">
+              <small>SELECTED CONTENT PLAN</small>
 
+              <h3>{selectedPlan.name}</h3>
 
+              <p>{selectedPlan.title}</p>
 
-              <div className="omt-step-title">
+            </div>
 
 
 
-                <span>02</span>
+            <div className="omt-selected-plan-price">
 
+              <del>
 
+                {formatCurrency(
 
-                <div>
+                  Number(
 
+                    String(selectedPlan.oldPrice ?? "")
 
+                      .replace(/[₹,\s]/g, "")
 
-                  <small>
+                  ) || 0
 
-                    {preparedBy === "client"
+                )}
 
-                      ? "YOUR DETAILS"
+              </del>
 
-                      : "CLIENT DETAILS"}
 
-                  </small>
 
+              <strong>
 
+                {formatCurrency(
 
-                  <h3>
+                  Number(
 
-                    {preparedBy === "client"
+                    String(selectedPlan.price ?? "")
 
-                      ? "Tell us about yourself."
+                      .replace(/[₹,\s]/g, "")
 
-                      : "Who is this quotation for?"}
+                  ) || 0
 
-                  </h3>
+                )}
 
+              </strong>
 
 
-                </div>
 
+              <span>{selectedPlan.discount}</span>
 
+            </div>
 
-              </div>
+          </div>
 
+        )}
 
 
 
 
-              <div className="omt-form-grid">
 
+        {/* ROLE */}
 
 
-                <div className="omt-input-group">
 
 
 
-                  <label>
 
-                    Name *
 
-                  </label>
+        <div className="omt-quote-card">
 
 
 
-                  <input
 
-                    type="text"
 
-                    name="name"
 
-                    placeholder="Enter name"
 
-                    value={client.name}
+          <div className="omt-step-title">
 
-                    onChange={handleClientChange}
 
-                  />
 
 
 
-                </div>
 
 
+            <span>01</span>
 
 
 
-                <div className="omt-input-group">
 
 
 
-                  <label>
 
-                    Company
+            <div>
 
-                  </label>
 
 
+              <small>START HERE</small>
 
-                  <input
 
-                    type="text"
 
-                    name="company"
+              <h3>
 
-                    placeholder="Company / Brand"
+                Generate Your Custom Quotation
 
-                    value={client.company}
+              </h3>
 
-                    onChange={handleClientChange}
 
-                  />
 
+              <p className="omt-step-description">
 
+                Choose how you'd like to prepare your quotation.
 
-                </div>
+              </p>
 
 
 
+            </div>
 
 
-                <div className="omt-input-group">
 
 
 
-                  <label>
 
-                    WhatsApp
 
-                  </label>
+          </div>
 
 
 
-                  <input
 
-                    type="tel"
 
-                    name="whatsapp"
 
-                    placeholder="+91 XXXXX XXXXX"
 
-                    value={client.whatsapp}
 
-                    onChange={handleClientChange}
 
-                  />
 
 
+          <div className="omt-prepared-options">
 
-                </div>
 
 
 
 
 
-                <div className="omt-input-group">
 
+            {/* MAIN CLIENT OPTION */}
 
 
-                  <label>
 
-                    Email
 
-                  </label>
 
 
 
-                  <input
+            <button
 
-                    type="email"
 
-                    name="email"
 
-                    placeholder="you@example.com"
+              type="button"
 
-                    value={client.email}
 
-                    onChange={handleClientChange}
 
-                  />
+              className={
 
 
 
-                </div>
+                preparedBy === "client"
 
 
 
-              </div>
+                  ? "omt-client-main active"
 
 
 
-            </div>
+                  : "omt-client-main"
 
 
 
+              }
 
 
-            {/* SERVICES */}
 
+              onClick={() =>
 
 
-            <div className="omt-quote-card">
 
+                handlePreparedBy("client")
 
 
-              <div className="omt-step-title">
 
+              }
 
 
-                <span>03</span>
 
+            >
 
 
-                <div>
 
 
 
-                  <small>
 
-                    SELECT SERVICE
 
-                  </small>
+              <div className="omt-client-main-content">
 
 
 
-                  <h3>
 
-                    What do you need?
 
-                  </h3>
 
 
+                <span>01</span>
 
-                </div>
 
 
 
-              </div>
 
 
 
+                <strong>
 
 
-              <div className="omt-service-grid">
 
+                  I AM THE CLIENT
 
 
-                {Object.keys(PRICING).map(
 
-                  (service, index) => (
+                </strong>
 
 
 
-                    <button
 
-                      type="button"
 
-                      key={service}
 
-                      className={
 
-                        selectedService === service
+                <small>
 
-                          ? "omt-service-box active"
 
-                          : "omt-service-box"
 
-                      }
+                  Prepare a quotation and
 
-                      onClick={() =>
 
-                        handleServiceSelect(service)
 
-                      }
+                  send it to One More Take.
 
-                    >
 
 
+                </small>
 
-                      <span>
 
-                        0{index + 1}
 
-                      </span>
 
 
 
-                      <strong>
 
-                        {service}
+              </div>
 
-                      </strong>
 
 
 
-                      <b>↗</b>
 
 
 
-                    </button>
+              <b>→</b>
 
 
 
-                  )
 
-                )}
 
 
 
-              </div>
+            </button>
 
 
 
 
 
-              {/* TYPES */}
 
 
 
-              {selectedService && (
 
 
 
-                <div id="quotation-service-details" className="omt-type-area">
+            {/* SMALL OWNER OPTION */}
 
 
 
-                  <div className="omt-subheading">
 
 
 
-                    <span>
 
-                      {selectedService}
+            <button
 
-                    </span>
 
 
+              type="button"
 
-                    <small>
 
-                      SELECT A TYPE
 
-                    </small>
+              className={
 
 
 
-                  </div>
+                preparedBy === "owner"
 
 
 
+                  ? "omt-owner-small active"
 
 
-                  <div className="omt-type-grid">
 
+                  : "omt-owner-small"
 
 
-                    {serviceTypes.map(
 
-                      (type, index) => (
+              }
 
 
 
-                        <button
+              onClick={() =>
 
-                          type="button"
 
-                          key={type.name}
 
-                          className={
+                handlePreparedBy("owner")
 
-                            selectedType?.name ===
 
-                            type.name
 
-                              ? "omt-type-box active"
+              }
 
-                              : "omt-type-box"
 
-                          }
 
-                          onClick={() =>
+            >
 
-                            handleTypeSelect(type)
 
-                          }
 
-                        >
 
 
 
-                          <span>
 
-                            0{index + 1}
+              <span>OWNER MODE</span>
 
-                          </span>
 
 
 
-                          <strong>
 
-                            {type.name}
 
-                          </strong>
 
+              <b>→</b>
 
 
-                          {type.negotiate ? (
 
-                            <em>
 
-                              Connect to Negotiate
 
-                            </em>
 
-                          ) : (
 
-                            <div className="omt-mini-price">
+            </button>
 
 
 
-                              <del>
 
-                                {formatCurrency(
 
-                                  type.actual
 
-                                )}
 
-                              </del>
+          </div>
 
 
 
-                              <b>
 
-                                {formatCurrency(
 
-                                  type.discount
 
-                                )}
 
-                              </b>
+        </div>
 
 
 
-                            </div>
 
-                          )}
 
 
 
-                        </button>
 
 
 
-                      )
 
-                    )}
+        {preparedBy && (
 
 
 
-                  </div>
+          <>
 
 
 
 
 
-                  {/* SELECTED TYPE */}
 
 
+            {/* CLIENT DETAILS */}
 
-                  {selectedType && (
 
 
 
-                    <div className="omt-selected-type">
 
 
 
-                      <div className="omt-selected-type-info">
+            <div className="omt-quote-card">
 
 
 
-                        <small>
 
-                          SELECTED
 
-                        </small>
 
 
+              <div className="omt-step-title">
 
-                        <h4>
 
-                          {selectedType.name}
 
-                        </h4>
 
 
 
-                      </div>
 
+                <span>02</span>
 
 
 
 
-                      {selectedType.negotiate ? (
 
 
 
-                        <div className="omt-negotiate-box">
+                <div>
 
 
 
-                          <strong>
 
-                            CONNECT TO NEGOTIATE
 
-                          </strong>
 
 
+                  <small>
 
-                          <span>
 
-                            Final pricing depends
 
-                            on your project scope.
+                    {preparedBy === "client"
 
-                          </span>
 
 
+                      ? "YOUR DETAILS"
 
-                        </div>
 
 
+                      : "CLIENT DETAILS"}
 
-                      ) : (
 
 
+                  </small>
 
-                        <div className="omt-price-detail">
 
 
 
-                          <div>
 
 
 
-                            <small>
+                  <h3>
 
-                              ACTUAL PRICE
 
-                            </small>
 
+                    {preparedBy === "client"
 
 
-                            <del>
 
-                              {formatCurrency(
+                      ? "Tell us about yourself."
 
-                                selectedType.actual
 
-                              )}
 
-                            </del>
+                      : "Who is this quotation for?"}
 
 
 
-                          </div>
+                  </h3>
 
 
 
 
 
-                          <div>
 
 
+                </div>
 
-                            <small>
 
-                              DISCOUNT PRICE
 
-                            </small>
 
 
 
-                            <strong>
 
-                              {formatCurrency(
+              </div>
 
-                                selectedType.discount
 
-                              )}
 
-                            </strong>
 
 
 
-                          </div>
 
 
 
-                        </div>
 
 
+              <div className="omt-form-grid">
 
-                      )}
 
 
 
 
 
-                      <div className="omt-quantity">
 
+                <div className="omt-input-group">
 
 
-                        <label>
 
-                          QTY
 
-                        </label>
 
 
 
-                        <input
+                  <label>
 
-                          type="number"
 
-                          min="1"
 
-                          value={quantity}
+                    Name *
 
-                          onChange={(e) =>
 
-                            setQuantity(
 
-                              Math.max(
+                  </label>
 
-                                1,
 
-                                Number(e.target.value)
 
-                              )
 
-                            )
 
-                          }
 
-                        />
 
+                  <input
 
 
-                      </div>
 
+                    type="text"
 
 
 
+                    name="name"
 
-                      <button
 
-                        type="button"
 
-                        className="omt-add-btn"
+                    placeholder="Enter name"
 
-                        onClick={addToQuotation}
 
-                      >
 
-                        ADD TO QUOTATION →
+                    value={client.name}
 
-                      </button>
 
 
+                    onChange={handleClientChange}
 
-                    </div>
 
 
+                  />
 
-                  )}
 
 
 
-                </div>
 
 
 
-              )}
+                </div>
 
 
 
-            </div>
 
 
 
 
 
-            {/* QUOTATION CART */}
 
 
 
-            {quotationItems.length > 0 && (
+                <div className="omt-input-group">
 
 
 
-              <div className="omt-quote-card">
 
 
 
-                <div className="omt-step-title">
 
+                  <label>
 
 
-                  <span>04</span>
 
+                    Company
 
 
-                  <div>
 
+                  </label>
 
 
-                    <small>
 
-                      YOUR QUOTATION
 
-                    </small>
 
 
 
-                    <h3>
+                  <input
 
-                      Selected services.
 
-                    </h3>
 
+                    type="text"
 
 
-                  </div>
 
+                    name="company"
 
 
-                </div>
 
+                    placeholder="Company / Brand"
 
 
 
+                    value={client.company}
 
-                <div className="omt-cart">
 
 
+                    onChange={handleClientChange}
 
-                  {quotationItems.map(
 
-                    (item, index) => (
 
+                  />
 
 
-                      <div
 
-                        className="omt-cart-row"
 
-                        key={`${item.name}-${index}`}
 
-                      >
 
 
+                </div>
 
-                        <div className="omt-cart-main">
 
 
 
-                          <small>
 
-                            {item.service}
 
-                          </small>
 
 
 
-                          <strong>
 
-                            {item.name}
 
-                          </strong>
+                <div className="omt-input-group">
 
 
 
-                        </div>
 
 
 
 
+                  <label>
 
-                        <div className="omt-cart-price">
 
 
+                    WhatsApp
 
-                          {item.negotiate ? (
 
-                            <strong>
 
-                              Negotiable
+                  </label>
 
-                            </strong>
 
-                          ) : (
 
-                            <>
 
-                              <del>
 
-                                {formatCurrency(
 
-                                  item.actual
 
-                                )}
+                  <input
 
-                              </del>
 
 
+                    type="tel"
 
-                              <strong>
 
-                                {formatCurrency(
 
-                                  item.discount
+                    name="whatsapp"
 
-                                )}
 
-                              </strong>
 
-                            </>
+                    placeholder="+91 XXXXX XXXXX"
 
-                          )}
 
 
+                    value={client.whatsapp}
 
-                        </div>
 
 
+                    onChange={handleClientChange}
 
 
 
-                        <input
+                  />
 
-                          className="omt-cart-qty"
 
-                          type="number"
 
-                          min="1"
 
-                          value={item.quantity}
 
-                          onChange={(e) =>
 
-                            updateItemQuantity(
 
-                              index,
+                </div>
 
-                              e.target.value
 
-                            )
 
-                          }
 
-                        />
 
 
 
 
 
-                        <button
 
-                          type="button"
 
-                          className="omt-remove-btn"
+                <div className="omt-input-group">
 
-                          onClick={() =>
 
-                            removeItem(index)
 
-                          }
 
-                        >
 
-                          ×
 
-                        </button>
 
+                  <label>
 
 
-                      </div>
 
+                    Email
 
 
-                    )
 
-                  )}
+                  </label>
 
 
 
-                </div>
 
 
 
 
+                  <input
 
-                <div className="omt-project-area">
 
 
+                    type="email"
 
-                  <label>
 
-                    PROJECT DETAILS
 
-                  </label>
+                    name="email"
 
 
 
-                  <textarea
+                    placeholder="you@example.com"
 
-                    placeholder="Tell us about your project, shoot requirements, number of videos, duration, location, deadline, etc."
 
-                    value={projectDetails}
 
-                    onChange={(e) =>
+                    value={client.email}
 
-                      setProjectDetails(
 
-                        e.target.value
 
-                      )
+                    onChange={handleClientChange}
 
-                    }
 
-                  />
 
+                  />
 
 
-                </div>
 
 
 
 
 
-                <div className="omt-bottom-controls">
+                </div>
 
 
 
-                  <label className="omt-gst-toggle">
 
 
 
-                    <input
 
-                      type="checkbox"
+              </div>
 
-                      checked={gstEnabled}
 
-                      onChange={(e) =>
 
-                        setGstEnabled(
 
-                          e.target.checked
 
-                        )
 
-                      }
 
-                    />
+            </div>
 
 
 
-                    <span>
 
-                      Add GST 18%
 
-                    </span>
 
 
 
-                  </label>
 
 
 
+            {/* SERVICES */}
 
 
-                  <div className="omt-live-total">
 
 
 
-                    <small>
 
-                      ESTIMATED TOTAL
 
-                    </small>
+            <div className="omt-quote-card">
 
 
 
-                    <strong>
 
-                      {formatCurrency(
 
-                        grandTotal
 
-                      )}
 
-                    </strong>
+              <div className="omt-step-title">
 
 
 
-                  </div>
 
 
 
-                </div>
 
+                <span>03</span>
 
 
 
 
-                <button
 
-                  type="button"
 
-                  className="omt-generate-btn"
 
-                  onClick={generateQuotation}
+                <div>
 
-                >
 
-                  CLICK TO GENERATE QUOTATION
 
-                  <span>→</span>
 
-                </button>
 
 
 
-              </div>
+                  <small>
 
 
 
-            )}
+                    SELECT SERVICE
 
 
 
-          </>
+                  </small>
 
-        )}
 
 
 
 
 
-        {/* PREVIEW */}
 
+                  <h3>
 
 
-        {generated && (
 
+                    What do you need?
 
 
-          <div
 
-            id="quotation-preview"
+                  </h3>
 
-            className="omt-preview-section"
 
-          >
 
 
 
-            <div className="omt-preview-ready">
-              <span className="omt-preview-ready-dot"></span>
-              QUOTATION GENERATED SUCCESSFULLY
-            </div>
 
-            <div className="omt-preview-heading">
 
+                </div>
 
 
-              <span>
 
-                05 / FINAL QUOTATION
 
-              </span>
 
 
 
-              <h3>
+              </div>
 
-                Your quotation is ready.
 
-              </h3>
 
 
 
-            </div>
 
 
 
 
 
-            <div
 
-              id="quotation-pdf"
+              <div className="omt-service-grid">
 
-              className="omt-pdf"
 
-            >
 
 
 
-              <div className="omt-pdf-header">
 
 
+                {Object.keys(PRICING).map(
 
-                <img
 
-                  src={LOGO}
 
-                  alt="One More Take"
+                  (service, index) => (
 
-                />
 
 
 
-                <div>
 
 
 
-                  <span>
+                    <button
 
-                    QUOTATION
 
-                  </span>
 
+                      type="button"
 
 
-                  <strong>
 
-                    {quotationNumber}
+                      key={service}
 
-                  </strong>
 
 
+                      className={
 
-                  <small>
 
-                    {getToday()}
 
-                  </small>
+                        selectedService === service
 
 
 
-                </div>
+                          ? "omt-service-box active"
 
 
 
-              </div>
+                          : "omt-service-box"
 
 
 
+                      }
 
 
-              <div className="omt-pdf-line" />
 
+                      onClick={() =>
 
 
 
+                        handleServiceSelect(service)
 
-              <div className="omt-pdf-meta">
 
 
+                      }
 
-                <div>
 
 
+                    >
 
-                  <small>
 
-                    PREPARED BY
 
-                  </small>
 
 
 
-                  <strong>
 
-                    {preparedBy === "client"
+                      <span>
 
-                      ? "CLIENT"
 
-                      : "ONE MORE TAKE"}
 
-                  </strong>
+                        0{index + 1}
 
 
 
-                </div>
+                      </span>
 
 
 
 
 
-                <div>
 
 
+                      <strong>
 
-                  <small>
 
-                    PREPARED FOR
 
-                  </small>
+                        {service}
 
 
 
-                  <strong>
+                      </strong>
 
-                    {client.name}
 
-                  </strong>
 
 
 
-                </div>
 
 
+                      <b>↗</b>
 
 
 
-                <div>
 
 
 
-                  <small>
 
-                    COMPANY
+                    </button>
 
-                  </small>
 
 
 
-                  <strong>
 
-                    {client.company || "-"}
 
-                  </strong>
 
+                  )
 
 
-                </div>
 
+                )}
 
 
 
 
-                <div>
 
 
 
-                  <small>
+              </div>
 
-                    CONTACT
 
-                  </small>
 
 
 
-                  <strong>
 
-                    {client.whatsapp ||
 
-                      client.email ||
 
-                      "-"}
 
-                  </strong>
 
 
+              {/* TYPES */}
 
-                </div>
 
 
 
-              </div>
 
 
 
+              {selectedService && (
 
 
-              {projectDetails && (
 
 
 
-                <div className="omt-pdf-project">
 
 
+                <div id="quotation-service-details" className="omt-type-area">
 
-                  <small>
 
-                    PROJECT DETAILS
 
-                  </small>
 
 
 
-                  <p>
 
-                    {projectDetails}
+                  <div className="omt-subheading">
 
-                  </p>
 
 
 
-                </div>
 
 
 
-              )}
+                    <span>
 
 
 
+                      {selectedService}
 
 
-              <table className="omt-pdf-table">
 
+                    </span>
 
 
-                <thead>
 
 
 
-                  <tr>
 
 
+                    <small>
 
-                    <th>
 
-                      SERVICE / TYPE
 
-                    </th>
+                      SELECT A TYPE
 
 
 
-                    <th>
+                    </small>
 
-                      ACTUAL
 
-                    </th>
 
 
 
-                    <th>
 
-                      DISCOUNT
 
-                    </th>
+                  </div>
 
 
 
-                    <th>
 
-                      QTY
 
-                    </th>
 
 
 
-                    <th>
 
-                      TOTAL
 
-                    </th>
 
+                  <div className="omt-type-grid">
 
 
-                  </tr>
 
 
 
-                </thead>
 
 
+                    {serviceTypes.map(
 
 
 
-                <tbody>
+                      (type, index) => (
 
 
 
-                  {quotationItems.map(
 
-                    (item, index) => (
 
 
 
-                      <tr key={index}>
+                        <button
 
 
 
-                        <td>
+                          type="button"
 
 
 
-                          <span>
+                          key={type.name}
 
-                            {item.service}
 
-                          </span>
 
+                          className={
 
 
-                          <strong>
 
-                            {item.name}
+                            selectedType?.name ===
 
-                          </strong>
 
 
+                            type.name
 
-                        </td>
 
 
+                              ? "omt-type-box active"
 
-                        <td>
 
 
+                              : "omt-type-box"
 
-                          {item.negotiate
 
-                            ? "—"
 
-                            : formatCurrency(
+                          }
 
-                                item.actual
 
-                              )}
 
+                          onClick={() =>
 
 
-                        </td>
 
+                            handleTypeSelect(type)
 
 
-                        <td>
 
+                          }
 
 
-                          {item.negotiate
 
-                            ? "Negotiable"
+                        >
 
-                            : formatCurrency(
 
-                                item.discount
 
-                              )}
 
 
 
-                        </td>
 
+                          <span>
 
 
-                        <td>
 
-                          {item.quantity}
+                            0{index + 1}
 
-                        </td>
 
 
+                          </span>
 
-                        <td>
 
 
 
-                          {item.negotiate
 
-                            ? "Negotiable"
 
-                            : formatCurrency(
 
-                                item.discount *
+                          <strong>
 
-                                  item.quantity
 
-                              )}
 
+                            {type.name}
 
 
-                        </td>
 
+                          </strong>
 
 
-                      </tr>
 
 
 
-                    )
 
-                  )}
 
+                          {type.negotiate ? (
 
 
-                </tbody>
 
+                            <em>
 
 
-              </table>
 
+                              Connect to Negotiate
 
 
 
+                            </em>
 
-              <div className="omt-pdf-summary">
 
 
+                          ) : (
 
-                <div>
 
 
+                            <div className="omt-mini-price">
 
-                  <span>
 
-                    ACTUAL VALUE
 
-                  </span>
 
 
 
-                  <strong>
 
-                    {formatCurrency(
+                              <del>
 
-                      actualTotal
 
-                    )}
 
-                  </strong>
+                                {formatCurrency(
 
 
 
-                </div>
+                                  type.actual
 
 
 
+                                )}
 
 
-                <div>
 
+                              </del>
 
 
-                  <span>
 
-                    DISCOUNT
 
-                  </span>
 
 
 
-                  <strong>
+                              <b>
 
-                    {formatCurrency(
 
-                      savings
 
-                    )}
+                                {formatCurrency(
 
-                  </strong>
 
 
+                                  type.discount
 
-                </div>
 
 
+                                )}
 
 
 
-                <div>
+                              </b>
 
 
 
-                  <span>
 
-                    SUBTOTAL
 
-                  </span>
 
 
+                            </div>
 
-                  <strong>
 
-                    {formatCurrency(
 
-                      subtotal
+                          )}
 
-                    )}
 
-                  </strong>
 
 
 
-                </div>
 
 
+                        </button>
 
 
 
-                <div>
 
 
 
-                  <span>
 
-                    GST 18%
+                      )
 
-                  </span>
 
 
+                    )}
 
-                  <strong>
 
-                    {formatCurrency(
 
-                      gstAmount
 
-                    )}
 
-                  </strong>
 
 
+                  </div>
 
-                </div>
 
 
 
 
 
-                <div className="omt-grand-total">
 
 
 
-                  <span>
 
-                    GRAND TOTAL
 
-                  </span>
+                  {/* SELECTED TYPE */}
 
 
 
-                  <strong>
 
-                    {formatCurrency(
 
-                      grandTotal
 
-                    )}
 
-                  </strong>
+                  {selectedType && (
 
 
 
-                </div>
 
 
 
-              </div>
 
+                    <div className="omt-selected-type">
 
 
 
 
-              <div className="omt-pdf-terms">
 
 
 
-  <div className="omt-pdf-terms-title">
+                      <div className="omt-selected-type-info">
 
-    <span>06</span>
 
-    <strong>TERMS & CONDITIONS</strong>
 
-  </div>
 
 
 
-  <div className="omt-terms-section">
 
+                        <small>
 
 
-    <h4>PROJECT & DELIVERY</h4>
 
+                          SELECTED
 
 
-    <ul>
 
-      <li>
+                        </small>
 
-        Production will begin only after the required
 
-        content brief and brand assets are received.
 
-      </li>
 
 
 
-      <li>
 
-        Delivery schedule will be mutually agreed based
+                        <h4>
 
-        on the approved project or monthly content calendar.
 
-      </li>
 
+                          {selectedType.name}
 
 
-      <li>
 
-        Final deliverables will be provided according
+                        </h4>
 
-        to the selected services and agreed scope.
 
-      </li>
 
-    </ul>
 
 
 
-  </div>
 
+                      </div>
 
 
 
 
-  <div className="omt-terms-section">
 
 
 
-    <h4>PAYMENT TERMS</h4>
 
 
 
-    <ul>
 
-      <li>
+                      {selectedType.negotiate ? (
 
-        30%–50% advance payment is required before
 
-        production begins.
 
-      </li>
 
 
 
-      <li>
 
-        The remaining balance is payable according
+                        <div className="omt-negotiate-box">
 
-        to the agreed delivery schedule.
 
-      </li>
 
 
 
-      <li>
 
-        Production will commence only after the
 
-        applicable advance payment is received.
+                          <strong>
 
-      </li>
 
-    </ul>
 
+                            CONNECT TO NEGOTIATE
 
 
-  </div>
 
+                          </strong>
 
 
 
 
-  <div className="omt-terms-section">
 
 
 
-    <h4>REVISIONS</h4>
+                          <span>
 
 
 
-    <ul>
+                            Final pricing depends
 
-      <li>
 
-        Up to 2 revision rounds are included where
 
-        mentioned in the selected service scope.
+                            on your project scope.
 
-      </li>
 
 
+                          </span>
 
-      <li>
 
-        Additional revisions or changes beyond the
 
-        approved scope may be charged separately.
 
-      </li>
 
-    </ul>
 
 
+                        </div>
 
-  </div>
 
 
 
 
 
-  <div className="omt-terms-section">
 
+                      ) : (
 
 
-    <h4>NOT INCLUDED</h4>
 
 
 
-    <ul>
 
-      <li>
 
-        Physical shoot, on-location production,
+                        <div className="omt-price-detail">
 
-        camera, lighting or recording crew unless
 
-        specifically included in the quotation.
 
-      </li>
 
 
 
-      <li>
 
-        Travel and location expenses are not included
+                          <div>
 
-        unless specifically mentioned.
 
-      </li>
 
 
 
-      <li>
 
-        Advanced 3D/VFX production will be quoted
 
-        separately where required.
+                            <small>
 
-      </li>
 
 
+                              ACTUAL PRICE
 
-      <li>
 
-        Paid stock footage, premium AI credits or
 
-        third-party assets required specifically for
+                            </small>
 
-        the project may be charged separately.
 
-      </li>
 
-    </ul>
 
 
 
-  </div>
 
+                            <del>
 
 
 
+                              {formatCurrency(
 
-  <div className="omt-terms-section">
 
 
+                                selectedType.actual
 
-    <h4>QUOTATION VALIDITY</h4>
 
 
+                              )}
 
-    <ul>
 
-      <li>
 
-        This quotation is valid for 15 days from the
+                            </del>
 
-        quotation date.
 
-      </li>
 
 
 
-      <li>
 
-        Final pricing may vary if the project scope,
 
-        quantity or requirements change.
+                          </div>
 
-      </li>
 
-    </ul>
 
 
 
-  </div>
 
 
 
 
 
-  <div className="omt-pdf-approval">
 
+                          <div>
 
 
-    <div>
 
-      <span>CLIENT NAME</span>
 
-      <strong>
 
-        {client.name || "________________"}
 
-      </strong>
 
-    </div>
+                            <small>
 
 
 
-    <div>
+                              DISCOUNT PRICE
 
-      <span>AUTHORIZED SIGNATURE</span>
 
-      <strong>
 
-        __________________________
+                            </small>
 
-      </strong>
 
-    </div>
 
 
 
-    <div>
 
-      <span>DATE</span>
 
-      <strong>
+                            <strong>
 
-        __________________
 
-      </strong>
 
-    </div>
+                              {formatCurrency(
 
 
 
-    <div>
+                                selectedType.discount
 
-      <span>APPROVAL</span>
 
-      <strong>
 
-        __________________
+                              )}
 
-      </strong>
 
-    </div>
 
+                            </strong>
 
 
-  </div>
+
+
+
+
+
+                          </div>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+                      )}
+
+
+
+
+
+
+
+
+
+
+
+                      <div className="omt-quantity">
+
+
+
+
+
+
+
+                        <label>
+
+
+
+                          QTY
+
+
+
+                        </label>
+
+
+
+
+
+
+
+                        <input
+
+
+
+                          type="number"
+
+
+
+                          min="1"
+
+
+
+                          value={quantity}
+
+
+
+                          onChange={(e) =>
+
+
+
+                            setQuantity(
+
+
+
+                              Math.max(
+
+
+
+                                1,
+
+
+
+                                Number(e.target.value)
+
+
+
+                              )
+
+
+
+                            )
+
+
+
+                          }
+
+
+
+                        />
+
+
+
+
+
+
+
+                      </div>
+
+
+
+
+
+
+
+
+
+
+
+                      <button
+
+
+
+                        type="button"
+
+
+
+                        className="omt-add-btn"
+
+
+
+                        onClick={addToQuotation}
+
+
+
+                      >
+
+
+
+                        ADD TO QUOTATION →
+
+
+
+                      </button>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+                  )}
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+              )}
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            {/* QUOTATION CART */}
+
+
+
+
+
+
+
+            {quotationItems.length > 0 && (
+
+
+
+
+
+
+
+              <div className="omt-quote-card">
+
+
+
+
+
+
+
+                <div className="omt-step-title">
+
+
+
+
+
+
+
+                  <span>04</span>
+
+
+
+
+
+
+
+                  <div>
+
+
+
+
+
+
+
+                    <small>
+
+
+
+                      YOUR QUOTATION
+
+
+
+                    </small>
+
+
+
+
+
+
+
+                    <h3>
+
+
+
+                      Selected services.
+
+
+
+                    </h3>
+
+
+
+
+
+
+
+                  </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div className="omt-cart">
+
+
+
+
+
+
+
+                  {quotationItems.map(
+
+
+
+                    (item, index) => (
+
+
+
+
+
+
+
+                      <div
+
+
+
+                        className="omt-cart-row"
+
+
+
+                        key={`${item.name}-${index}`}
+
+
+
+                      >
+
+
+
+
+
+
+
+                        <div className="omt-cart-main">
+
+
+
+
+
+
+
+                          <small>
+
+
+
+                            {item.service}
+
+
+
+                          </small>
+
+
+
+
+
+
+
+                          <strong>
+
+
+
+                            {item.name}
+
+
+
+                          </strong>
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+                        <div className="omt-cart-price">
+
+
+
+
+
+
+
+                          {item.negotiate ? (
+
+
+
+                            <strong>
+
+
+
+                              Negotiable
+
+
+
+                            </strong>
+
+
+
+                          ) : (
+
+
+
+                            <>
+
+
+
+                              <del>
+
+
+
+                                {formatCurrency(
+
+
+
+                                  item.actual
+
+
+
+                                )}
+
+
+
+                              </del>
+
+
+
+
+
+
+
+                              <strong>
+
+
+
+                                {formatCurrency(
+
+
+
+                                  item.discount
+
+
+
+                                )}
+
+
+
+                              </strong>
+
+
+
+                            </>
+
+
+
+                          )}
+
+
+
+
+
+
+
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+                        <input
+
+
+
+                          className="omt-cart-qty"
+
+
+
+                          type="number"
+
+
+
+                          min="1"
+
+
+
+                          value={item.quantity}
+
+
+
+                          onChange={(e) =>
+
+
+
+                            updateItemQuantity(
+
+
+
+                              index,
+
+
+
+                              e.target.value
+
+
+
+                            )
+
+
+
+                          }
+
+
+
+                        />
+
+
+
+
+
+
+
+
+
+
+
+                        <button
+
+
+
+                          type="button"
+
+
+
+                          className="omt-remove-btn"
+
+
+
+                          onClick={() =>
+
+
+
+                            removeItem(index)
+
+
+
+                          }
+
+
+
+                        >
+
+
+
+                          ×
+
+
+
+                        </button>
+
+
+
+
+
+
+
+                      </div>
+
+
+
+
+
+
+
+                    )
+
+
+
+                  )}
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div className="omt-project-area">
+
+
+
+
+
+
+
+                  <label>
+
+
+
+                    PROJECT DETAILS
+
+
+
+                  </label>
+
+
+
+
+
+
+
+                  <textarea
+
+
+
+                    placeholder="Tell us about your project, shoot requirements, number of videos, duration, location, deadline, etc."
+
+
+
+                    value={projectDetails}
+
+
+
+                    onChange={(e) =>
+
+
+
+                      setProjectDetails(
+
+
+
+                        e.target.value
+
+
+
+                      )
+
+
+
+                    }
+
+
+
+                  />
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div className="omt-bottom-controls">
+
+
+
+
+
+
+
+                  <label className="omt-gst-toggle">
+
+
+
+
+
+
+
+                    <input
+
+
+
+                      type="checkbox"
+
+
+
+                      checked={gstEnabled}
+
+
+
+                      onChange={(e) =>
+
+
+
+                        setGstEnabled(
+
+
+
+                          e.target.checked
+
+
+
+                        )
+
+
+
+                      }
+
+
+
+                    />
+
+
+
+
+
+
+
+                    <span>
+
+
+
+                      Add GST 18%
+
+
+
+                    </span>
+
+
+
+
+
+
+
+                  </label>
+
+
+
+
+
+
+
+
+
+
+
+                  <div className="omt-live-total">
+
+
+
+
+
+
+
+                    <small>
+
+
+
+                      ESTIMATED TOTAL
+
+
+
+                    </small>
+
+
+
+
+
+
+
+                    <strong>
+
+
+
+                      {formatCurrency(
+
+
+
+                        grandTotal
+
+
+
+                      )}
+
+
+
+                    </strong>
+
+
+
+
+
+
+
+                  </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <button
+
+
+
+                  type="button"
+
+
+
+                  className="omt-generate-btn"
+
+
+
+                  onClick={generateQuotation}
+
+
+
+                >
+
+
+
+                  CLICK TO GENERATE QUOTATION
+
+
+
+                  <span>→</span>
+
+
+
+                </button>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+
+
+
+            )}
+
+
+
+
+
+
+
+          </>
+
+
+
+        )}
+
+
+
+
+
+
+
+
+
+
+
+        {/* PREVIEW */}
+
+
+
+
+
+
+
+        {generated && (
+
+
+
+
+
+
+
+          <div
+
+
+
+            id="quotation-preview"
+
+
+
+            className="omt-preview-section"
+
+
+
+          >
+
+
+
+
+
+
+
+            <div className="omt-preview-ready">
+
+              <span className="omt-preview-ready-dot"></span>
+
+              QUOTATION GENERATED SUCCESSFULLY
+
+            </div>
+
+
+
+            <div className="omt-preview-heading">
+
+
+
+
+
+
+
+              <span>
+
+
+
+                05 / FINAL QUOTATION
+
+
+
+              </span>
+
+
+
+
+
+
+
+              <h3>
+
+
+
+                Your quotation is ready.
+
+
+
+              </h3>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <div
+
+
+
+              id="quotation-pdf"
+
+
+
+              className="omt-pdf"
+
+
+
+            >
+
+
+
+
+
+
+
+              <div className="omt-pdf-header">
+
+
+
+
+
+
+
+                <img
+
+
+
+                  src={LOGO}
+
+
+
+                  alt="One More Take"
+
+
+
+                />
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <span>
+
+
+
+                    QUOTATION
+
+
+
+                  </span>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {quotationNumber}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                  <small>
+
+
+
+                    {getToday()}
+
+
+
+                  </small>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+              <div className="omt-pdf-line" />
+
+
+
+
+
+
+
+
+
+
+
+              <div className="omt-pdf-meta">
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <small>
+
+
+
+                    PREPARED BY
+
+
+
+                  </small>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {preparedBy === "client"
+
+
+
+                      ? "CLIENT"
+
+
+
+                      : "ONE MORE TAKE"}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <small>
+
+
+
+                    PREPARED FOR
+
+
+
+                  </small>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {client.name}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <small>
+
+
+
+                    COMPANY
+
+
+
+                  </small>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {client.company || "-"}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <small>
+
+
+
+                    CONTACT
+
+
+
+                  </small>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {client.whatsapp ||
+
+
+
+                      client.email ||
+
+
+
+                      "-"}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+              {projectDetails && (
+
+
+
+
+
+
+
+                <div className="omt-pdf-project">
+
+
+
+
+
+
+
+                  <small>
+
+
+
+                    PROJECT DETAILS
+
+
+
+                  </small>
+
+
+
+
+
+
+
+                  <p>
+
+
+
+                    {projectDetails}
+
+
+
+                  </p>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+              )}
+
+
+
+
+
+
+
+
+
+
+
+              <table className="omt-pdf-table">
+
+
+
+
+
+
+
+                <thead>
+
+
+
+
+
+
+
+                  <tr>
+
+
+
+
+
+
+
+                    <th>
+
+
+
+                      SERVICE / TYPE
+
+
+
+                    </th>
+
+
+
+
+
+
+
+                    <th>
+
+
+
+                      ACTUAL
+
+
+
+                    </th>
+
+
+
+
+
+
+
+                    <th>
+
+
+
+                      DISCOUNT
+
+
+
+                    </th>
+
+
+
+
+
+
+
+                    <th>
+
+
+
+                      QTY
+
+
+
+                    </th>
+
+
+
+
+
+
+
+                    <th>
+
+
+
+                      TOTAL
+
+
+
+                    </th>
+
+
+
+
+
+
+
+                  </tr>
+
+
+
+
+
+
+
+                </thead>
+
+
+
+
+
+
+
+
+
+
+
+                <tbody>
+
+
+
+
+
+
+
+                  {quotationItems.map(
+
+
+
+                    (item, index) => (
+
+
+
+
+
+
+
+                      <tr key={index}>
+
+
+
+
+
+
+
+                        <td>
+
+
+
+
+
+
+
+                          <span>
+
+
+
+                            {item.service}
+
+
+
+                          </span>
+
+
+
+
+
+
+
+                          <strong>
+
+
+
+                            {item.name}
+
+
+
+                          </strong>
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td>
+
+
+
+
+
+
+
+                          {item.negotiate
+
+
+
+                            ? "—"
+
+
+
+                            : formatCurrency(
+
+
+
+                                item.actual
+
+
+
+                              )}
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td>
+
+
+
+
+
+
+
+                          {item.negotiate
+
+
+
+                            ? "Negotiable"
+
+
+
+                            : formatCurrency(
+
+
+
+                                item.discount
+
+
+
+                              )}
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td>
+
+
+
+                          {item.quantity}
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                        <td>
+
+
+
+
+
+
+
+                          {item.negotiate
+
+
+
+                            ? "Negotiable"
+
+
+
+                            : formatCurrency(
+
+
+
+                                item.discount *
+
+
+
+                                  item.quantity
+
+
+
+                              )}
+
+
+
+
+
+
+
+                        </td>
+
+
+
+
+
+
+
+                      </tr>
+
+
+
+
+
+
+
+                    )
+
+
+
+                  )}
+
+
+
+
+
+
+
+                </tbody>
+
+
+
+
+
+
+
+              </table>
+
+
+
+
+
+
+
+
+
+
+
+              <div className="omt-pdf-summary">
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <span>
+
+
+
+                    ACTUAL VALUE
+
+
+
+                  </span>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {formatCurrency(
+
+
+
+                      actualTotal
+
+
+
+                    )}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <span>
+
+
+
+                    DISCOUNT
+
+
+
+                  </span>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {formatCurrency(
+
+
+
+                      savings
+
+
+
+                    )}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <span>
+
+
+
+                    SUBTOTAL
+
+
+
+                  </span>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {formatCurrency(
+
+
+
+                      subtotal
+
+
+
+                    )}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div>
+
+
+
+
+
+
+
+                  <span>
+
+
+
+                    GST 18%
+
+
+
+                  </span>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {formatCurrency(
+
+
+
+                      gstAmount
+
+
+
+                    )}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div className="omt-grand-total">
+
+
+
+
+
+
+
+                  <span>
+
+
+
+                    GRAND TOTAL
+
+
+
+                  </span>
+
+
+
+
+
+
+
+                  <strong>
+
+
+
+                    {formatCurrency(
+
+
+
+                      grandTotal
+
+
+
+                    )}
+
+
+
+                  </strong>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+              <div className="omt-pdf-terms">
+
+
+
+
+
+
+
+  <div className="omt-pdf-terms-title">
+
+
+
+    <span>06</span>
+
+
+
+    <strong>TERMS & CONDITIONS</strong>
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <div className="omt-terms-section">
+
+
+
+
+
+
+
+    <h4>PROJECT & DELIVERY</h4>
+
+
+
+
+
+
+
+    <ul>
+
+
+
+      <li>
+
+
+
+        Production will begin only after the required
+
+
+
+        content brief and brand assets are received.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Delivery schedule will be mutually agreed based
+
+
+
+        on the approved project or monthly content calendar.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Final deliverables will be provided according
+
+
+
+        to the selected services and agreed scope.
+
+
+
+      </li>
+
+
+
+    </ul>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div className="omt-terms-section">
+
+
+
+
+
+
+
+    <h4>PAYMENT TERMS</h4>
+
+
+
+
+
+
+
+    <ul>
+
+
+
+      <li>
+
+
+
+        30%–50% advance payment is required before
+
+
+
+        production begins.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        The remaining balance is payable according
+
+
+
+        to the agreed delivery schedule.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Production will commence only after the
+
+
+
+        applicable advance payment is received.
+
+
+
+      </li>
+
+
+
+    </ul>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div className="omt-terms-section">
+
+
+
+
+
+
+
+    <h4>REVISIONS</h4>
+
+
+
+
+
+
+
+    <ul>
+
+
+
+      <li>
+
+
+
+        Up to 2 revision rounds are included where
+
+
+
+        mentioned in the selected service scope.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Additional revisions or changes beyond the
+
+
+
+        approved scope may be charged separately.
+
+
+
+      </li>
+
+
+
+    </ul>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div className="omt-terms-section">
+
+
+
+
+
+
+
+    <h4>NOT INCLUDED</h4>
+
+
+
+
+
+
+
+    <ul>
+
+
+
+      <li>
+
+
+
+        Physical shoot, on-location production,
+
+
+
+        camera, lighting or recording crew unless
+
+
+
+        specifically included in the quotation.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Travel and location expenses are not included
+
+
+
+        unless specifically mentioned.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Advanced 3D/VFX production will be quoted
+
+
+
+        separately where required.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Paid stock footage, premium AI credits or
+
+
+
+        third-party assets required specifically for
+
+
+
+        the project may be charged separately.
+
+
+
+      </li>
+
+
+
+    </ul>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div className="omt-terms-section">
+
+
+
+
+
+
+
+    <h4>QUOTATION VALIDITY</h4>
+
+
+
+
+
+
+
+    <ul>
+
+
+
+      <li>
+
+
+
+        This quotation is valid for 15 days from the
+
+
+
+        quotation date.
+
+
+
+      </li>
+
+
+
+
+
+
+
+      <li>
+
+
+
+        Final pricing may vary if the project scope,
+
+
+
+        quantity or requirements change.
+
+
+
+      </li>
+
+
+
+    </ul>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div className="omt-pdf-approval">
+
+
+
+
+
+
+
+    <div>
+
+
+
+      <span>CLIENT NAME</span>
+
+
+
+      <strong>
+
+
+
+        {client.name || "________________"}
+
+
+
+      </strong>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div>
+
+
+
+      <span>AUTHORIZED SIGNATURE</span>
+
+
+
+      <strong>
+
+
+
+        __________________________
+
+
+
+      </strong>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div>
+
+
+
+      <span>DATE</span>
+
+
+
+      <strong>
+
+
+
+        __________________
+
+
+
+      </strong>
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <div>
+
+
+
+      <span>APPROVAL</span>
+
+
+
+      <strong>
+
+
+
+        __________________
+
+
+
+      </strong>
+
+
+
+    </div>
+
+
+
+
+
+
+
+  </div>
+
+
+
+
 
 
 
@@ -3096,103 +6209,209 @@ Please find the quotation details above.
 
 
 
-              <div className="omt-pdf-footer">
-
-
-
-                <strong>
-
-                  ONE MORE TAKE
-
-                </strong>
-
-
-
-                <span>
-
-                  CAMERA • EDITING • CONTENT
-
-                </span>
-
-
-
-              </div>
-
-
-
-            </div>
 
 
 
 
 
-            <div className="omt-preview-actions">
 
-
-
-              <button
-
-                type="button"
-
-                onClick={downloadPDF}
-
-                className="omt-download-btn"
-
-              >
-
-                ↓ DOWNLOAD PDF
-
-              </button>
+              <div className="omt-pdf-footer">
 
 
 
 
 
-              <button
 
-                type="button"
 
-                onClick={sendWhatsApp}
-
-                className="omt-whatsapp-btn"
-
-              >
-
-                SEND TO{" "}
-
-                {preparedBy === "client"
-
-                  ? "OWNER"
-
-                  : "CLIENT"}{" "}
-
-                →
-
-              </button>
+                <strong>
 
 
 
-            </div>
+                  ONE MORE TAKE
 
 
 
-          </div>
+                </strong>
 
 
 
-        )}
 
 
 
-      </div>
+
+                <span>
 
 
 
-    </section>
+                  CAMERA • EDITING • CONTENT
 
-  );
+
+
+                </span>
+
+
+
+
+
+
+
+              </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <div className="omt-preview-actions">
+
+
+
+
+
+
+
+              <button
+
+
+
+                type="button"
+
+
+
+                onClick={downloadPDF}
+
+
+
+                className="omt-download-btn"
+
+
+
+              >
+
+
+
+                ↓ DOWNLOAD PDF
+
+
+
+              </button>
+
+
+
+
+
+
+
+
+
+
+
+              <button
+
+
+
+                type="button"
+
+
+
+                onClick={sendWhatsApp}
+
+
+
+                className="omt-whatsapp-btn"
+
+
+
+              >
+
+
+
+                SEND TO{" "}
+
+
+
+                {preparedBy === "client"
+
+
+
+                  ? "OWNER"
+
+
+
+                  : "CLIENT"}{" "}
+
+
+
+                →
+
+
+
+              </button>
+
+
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+          </div>
+
+
+
+
+
+
+
+        )}
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+    </section>
+
+
+
+  );
+
+
 
 }
+
+
+
+
 
 
 

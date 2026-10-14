@@ -1,0 +1,171 @@
+
+/* =========================================
+   MARQUEE SECTION
+========================================= */
+
+.marquee-section {
+  position: relative;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--red, #ed111b);
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.marquee-section * {
+  box-sizing: border-box;
+}
+
+/* MOVING TRACK */
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  width: max-content;
+  min-width: max-content;
+  animation: marqueeScroll 28s linear infinite;
+  will-change: transform;
+}
+
+/* PAUSE ON HOVER */
+
+.marquee-section:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* TEXT ITEM */
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 32px;
+  padding: 0 28px;
+  white-space: nowrap;
+}
+
+.marquee-item span:first-child {
+  color: #ffffff;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(16px, 2vw, 25px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* STAR ICON */
+
+.marquee-star {
+  display: inline-block;
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 1;
+  animation: marqueeStarRotate 8s linear infinite;
+}
+
+/* SCROLL ANIMATION */
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* STAR ROTATION */
+
+@keyframes marqueeStarRotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .marquee-section {
+    height: 70px;
+  }
+
+  .marquee-item {
+    gap: 25px;
+    padding: 0 22px;
+  }
+
+  .marquee-star {
+    font-size: 15px;
+  }
+
+  .marquee-track {
+    animation-duration: 24s;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .marquee-section {
+    height: 58px;
+  }
+
+  .marquee-item {
+    gap: 18px;
+    padding: 0 16px;
+  }
+
+  .marquee-item span:first-child {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .marquee-star {
+    font-size: 13px;
+  }
+
+  .marquee-track {
+    animation-duration: 20s;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 360px) {
+  .marquee-section {
+    height: 52px;
+  }
+
+  .marquee-item {
+    gap: 14px;
+    padding: 0 12px;
+  }
+
+  .marquee-item span:first-child {
+    font-size: 12px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    transform: none;
+  }
+
+  .marquee-star {
+    animation: none;
+  }
+}

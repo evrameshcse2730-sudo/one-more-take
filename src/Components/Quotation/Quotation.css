@@ -3561,3 +3561,39 @@
     animation: none !important;
   }
 }
+
+.omt-custom-quotation-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 13px 20px;
+  border: 1px solid #ed111b;
+  background: transparent;
+  color: #ed111b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.omt-custom-quotation-btn:hover {
+  background: #ed111b;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.omt-custom-quotation-btn:focus-visible {
+  outline: 2px solid #ed111b;
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .omt-custom-quotation-btn {
+    width: 100%;
+    margin-top: 14px;
+  }
+}

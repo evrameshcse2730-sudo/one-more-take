@@ -978,3 +978,69 @@
     transform: none;
   }
 }
+.plans-custom-quotation {
+  position: relative;
+  max-width: 650px;
+  margin: 48px auto 0;
+  padding: 32px 24px;
+  text-align: center;
+  border: 1px solid rgba(237, 17, 27, 0.35);
+  background: rgba(237, 17, 27, 0.04);
+}
+
+.plans-custom-quotation p {
+  margin: 0 0 8px;
+  color: #ed111b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.plans-custom-quotation > span {
+  display: block;
+  color: #aaa;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.plans-custom-quotation-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 22px;
+  border: 1px solid #ed111b;
+  background: #ed111b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.plans-custom-quotation-btn:hover {
+  background: transparent;
+  color: #ed111b;
+  transform: translateY(-2px);
+}
+
+.plans-custom-quotation-btn:focus-visible {
+  outline: 2px solid #ed111b;
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .plans-custom-quotation {
+    margin-top: 32px;
+    padding: 24px 16px;
+  }
+
+  .plans-custom-quotation-btn {
+    width: 100%;
+  }
+}
