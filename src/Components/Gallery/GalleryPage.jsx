@@ -1,48 +1,37 @@
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase";
 import "./Gallery.css";
-
-const galleryItems = [
-  {
-    image:
-      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834997/One_More_Take__Cinematic_Production_Set_wgexcd.png",
-    title: "Cinematic Production",
-    description: "Cinematic visuals crafted to tell powerful stories.",
-    category: "PRODUCTION",
-  },
-  {
-    image:
-      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834834/One_More_Take__Shoot_Cut_Ready_xcpbp9.png",
-    title: "Social Media Reels",
-    description: "Creative reels that capture attention and engage audiences.",
-    category: "SOCIAL MEDIA",
-  },
-  {
-    image:
-      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834832/Event_Videography_in_Action_vg5ttu.png",
-    title: "Event Stories",
-    description: "Capturing memorable moments through cinematic storytelling.",
-    category: "EVENTS",
-  },
-  {
-    image:
-      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790834689/One_More_Take_Podcast_Studio_vl8pmk.png",
-    title: "Podcast Production",
-    description: "Professional podcast recording and visual production.",
-    category: "PODCAST",
-  },
-  {
-    image:
-      "https://res.cloudinary.com/db4faz2rs/image/upload/v1790835981/One_More_Take_Creative_Studio_nd96gk.png",
-    title: "Creative Studio",
-    description: "Turning raw footage into polished creative content.",
-    category: "VIDEO EDITING",
-  },
-];
 
 export default function GalleryPage() {
   const navigate = useNavigate();
+  const [galleryItems, setGalleryItems] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      doc(db, "siteContent", "gallery"),
+      (snapshot) => {
+        const data = snapshot.exists() ? snapshot.data() : {};
+        const items = Array.isArray(data.images) ? data.images : [];
+
+        setGalleryItems(
+          items.filter((item) => item.url).map((item, index) => ({
+            id: item.id || item.publicId || item.url || String(index),
+            title: item.title || `Creative Project ${index + 1}`,
+            category: item.category || "CREATIVE PRODUCTION",
+            description: item.description || "A story brought to life.",
+            image: item.url,
+          }))
+        );
+      },
+      (error) => {
+        console.error("Failed to load gallery page:", error);
+      }
+    );
+
+    return unsubscribe;
+  }, []);
 
   return (
     <main className="omt-gallery-page">
@@ -52,7 +41,7 @@ export default function GalleryPage() {
           type="button"
           onClick={() => navigate("/")}
         >
-          ← Back to Home
+          <span aria-hidden="true">←</span> Back to Home
         </button>
 
         <span className="omt-gallery-label">OUR CREATIVE WORK</span>
@@ -67,20 +56,40 @@ export default function GalleryPage() {
         </p>
       </header>
 
-      <div className="omt-gallery-grid">
-        {galleryItems.map((item) => (
-          <article className="omt-gallery-item" key={item.title}>
-            <div className="omt-gallery-thumb">
-              <img src={item.image} alt={item.title} loading="lazy" />
-            </div>
+      <section className="omt-gallery-grid" aria-label="All gallery projects">
+        {galleryItems.length === 0 ? (
+          <p className="omt-gallery-empty">
+            Gallery images will appear here soon.
+          </p>
+        ) : (
+          galleryItems.map((item) => (
+            <article className="omt-gallery-item" key={item.id}>
+              <div className="omt-gallery-thumb">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                />
+              </div>
 
-            <div className="omt-gallery-item-info">
-              <span>{item.category}</span>
-              <h2>{item.title}</h2>
-              <p>{item.description}</p>
-            </div>
-          </article>
-        ))}
+              <div className="omt-gallery-item-info">
+                <span>{item.category}</span>
+                <h2>{item.title}</h2>
+                <p>{item.description}</p>
+              </div>
+            </article>
+          ))
+        )}
+      </section>
+
+      <div className="omt-gallery-page-footer">
+        <button
+          className="omt-gallery-back-bottom"
+          type="button"
+          onClick={() => navigate("/")}
+        >
+          ← Back to Home
+        </button>
       </div>
     </main>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
 import "./App.css";
 
@@ -28,10 +29,17 @@ import Quotation from "./Components/Quotation/Quotation";
 import Contact from "./Components/Contact/Contact";
 
 import Footer from "./Components/Footer/Footer";
+
 import Gallery from "./Components/Gallery/Gallery";
+
 import GalleryPage from "./Components/Gallery/GalleryPage";
 
-function App() {
+import AdminPage from "./Components/Admin/AdminPage";
+import Booking from "./Components/Booking/ShootingBooking";
+
+function HomePage() {
+
+  const navigate = useNavigate();
 
   const [activeSection, setActiveSection] = useState("home");
 
@@ -40,31 +48,33 @@ function App() {
   const [loaded, setLoaded] = useState(false);
 
   const [selectedPlanForQuotation, setSelectedPlanForQuotation] = useState(() => {
+
     try {
+
       const savedPlan = window.sessionStorage.getItem("omt-selected-quotation-plan");
+
       return savedPlan ? JSON.parse(savedPlan) : null;
+
     } catch {
+
       return null;
+
     }
+
   });
 
   const cursorDotRef = useRef(null);
 
   const cursorRingRef = useRef(null);
 
-  const scrollTo = (id) => {
+  const scrollTo = (sectionId) => {
+  document.getElementById(sectionId)?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+};
 
-    document.getElementById(id)?.scrollIntoView({
-
-      behavior: "smooth",
-
-      block: "start",
-
-    });
-
-  };
-
-const handlePlanQuotation = (plan) => {
+  const handlePlanQuotation = (plan) => {
     setSelectedPlanForQuotation(plan);
 
     try {
@@ -76,7 +86,7 @@ const handlePlanQuotation = (plan) => {
       console.warn("Could not save the selected quotation plan.", error);
     }
 
-    window.location.assign("/quotation");
+    navigate("/quotation");
   };
 
   // Page load animation
@@ -517,36 +527,6 @@ const handlePlanQuotation = (plan) => {
 
   }, []);
 
-  // Render quotation on a separate URL instead of scrolling within the homepage.
-  if (window.location.pathname.replace(/\/$/, "") === "/quotation") {
-    return (
-      <div className={`site ${loaded ? "site-loaded" : "site-loading"}`}>
-        <a
-          href="/"
-          className="quotation-back-home"
-          style={{
-            position: "fixed",
-            top: "20px",
-            left: "20px",
-            zIndex: 1000,
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "12px 16px",
-            background: "#ed111b",
-            color: "#fff",
-            textDecoration: "none",
-            fontSize: "12px",
-            fontWeight: 700,
-          }}
-        >
-          ← Back to Home
-        </a>
-        <Quotation selectedPlan={selectedPlanForQuotation} />
-      </div>
-    );
-  }
-
   return (
 
     <div className={`site ${loaded ? "site-loaded" : "site-loading"}`}>
@@ -594,10 +574,8 @@ const handlePlanQuotation = (plan) => {
       <div className="ambient-particles" aria-hidden="true">
 
         {Array.from({ length: 14 }).map((_, index) => (
-
-          <i key={index} style={{ "--i": index }} />
-
-        ))}
+  <i key={index} style={{ "--i": index }} />
+))}
 
       </div>
 
@@ -626,9 +604,11 @@ const handlePlanQuotation = (plan) => {
       <Work />
 
       <Experience />
-<Gallery />
-      <Reviews />
 
+<Gallery />
+
+      <Reviews />
+<Booking  />
       <Contact />
 
       <Footer />
@@ -639,4 +619,64 @@ const handlePlanQuotation = (plan) => {
 
 }
 
-export default App;
+function QuotationPage() {
+  const navigate = useNavigate();
+  const [selectedPlan] = useState(() => {
+    try {
+      const savedPlan = window.sessionStorage.getItem("omt-selected-quotation-plan");
+      return savedPlan ? JSON.parse(savedPlan) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  return (
+    <div className="site site-loaded">
+      <button
+        type="button"
+        className="quotation-back-home"
+        onClick={() => navigate("/")}
+        style={{
+          position: "fixed",
+          top: "20px",
+          left: "20px",
+          zIndex: 1000,
+          padding: "12px 16px",
+          border: 0,
+          background: "#ed111b",
+          color: "#fff",
+          cursor: "pointer",
+          fontSize: "12px",
+          fontWeight: 700,
+        }}
+      >
+        ← Back to Home
+      </button>
+      <Quotation selectedPlan={selectedPlan} />
+    </div>
+  );
+}
+
+function NotFound() {
+  const navigate = useNavigate();
+  return (
+    <main className="omt-not-found">
+      <h1>404 — Page Not Found</h1>
+      <p>The page you are looking for does not exist.</p>
+      <button type="button" onClick={() => navigate("/")}>Back to Home</button>
+    </main>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/gallery" element={<GalleryPage />} />
+      <Route path="/quotation" element={<QuotationPage />} />
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<Navigate to="/404" replace />} />
+    </Routes>
+  );
+}

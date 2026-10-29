@@ -323,29 +323,11 @@ const PRICING = {
   ],
 
   "Video Editing": [
-
-
-
     {
-
-
-
       name: "Short-form Editing",
-
-
-
       actual: 2500,
-
-
-
       discount: 2000,
-
-
-
     },
-
-
-
     {
 
 
@@ -1424,7 +1406,7 @@ ${selectedPlan.description || selectedPlan.text || ""}`
 
 
 
-  const sendWhatsApp = () => {
+  const sendWhatsApp = async () => {
 
 
 
@@ -1528,131 +1510,30 @@ ${selectedPlan.description || selectedPlan.text || ""}`
 
 
 
-    const message = `
-
-
-
-ONE MORE TAKE
-
-
-
-QUOTATION
-
-
-
-
-
-
-
-Quotation No: ${quotationNumber}
-
-
-
-
-
-
-
-Prepared By:
-
-
-
-${preparedBy === "client" ? "Client" : "Owner"}
-
-
-
-
-
-
-
-Client:
-
-
-
-${client.name}
-
-
-
-
-
-
-
-Company:
-
-
-
-${client.company || "-"}
-
-
-
-
-
-
-
-Services:
-
-
-
-${serviceText}
-
-
-
-${selectedPlan ? `Selected Plan:\n${selectedPlan.name} — ${selectedPlan.title}\n` : ""}
-
-
-
-Subtotal:
-
-
-
-${formatCurrency(subtotal)}
-
-
-
-
-
-
-
-GST:
-
-
-
-${formatCurrency(gstAmount)}
-
-
-
-
-
-
-
-Grand Total:
-
-
-
-${formatCurrency(grandTotal)}
-
-
-
-
-
-
-
-Project Details:
-
-
-
-${projectDetails || "-"}
-
-
-
-
-
-
-
-Please find the quotation details above.
-
-
-
-    `.trim();
+ 
+const message = [
+  "ONE MORE TAKE - QUOTATION",
+  `Quotation No: ${quotationNumber}`,
+  `Prepared By: ${preparedBy === "client" ? "Client" : "Owner"}`,
+  `Client: ${client.name}`,
+  `Company: ${client.company || "-"}`,
+  "",
+  "SERVICES:",
+  ...quotationItems.map((item) => {
+    const price = item.negotiate
+      ? "Negotiable"
+      : formatCurrency(item.discount * item.quantity);
+
+    return `${item.name} (Qty: ${item.quantity}) - ${price}`;
+  }),
+  "",
+  `Subtotal: ${formatCurrency(subtotal)}`,
+  `GST: ${formatCurrency(gstAmount)}`,
+  `Grand Total: ${formatCurrency(grandTotal)}`,
+  `Project Details: ${projectDetails || "-"}`,
+  "",
+  "Please find the attached quotation PDF."
+].join("\n");
 
 
 
@@ -1676,7 +1557,22 @@ Please find the quotation details above.
 
 
 
-    window.open(url, "_blank");
+    // Open the WhatsApp tab immediately so the browser does not block it.
+    const whatsappWindow = window.open("about:blank", "_blank");
+
+    // Download the quotation PDF first. WhatsApp Web cannot attach a local
+    // file automatically, so the user must attach the downloaded PDF manually.
+    await downloadPDF();
+
+    if (whatsappWindow) {
+      whatsappWindow.location.href = url;
+    } else {
+      window.location.href = url;
+    }
+
+    alert(
+      "Quotation PDF downloaded. In WhatsApp, attach the downloaded PDF and press Send."
+    );
 
 
 

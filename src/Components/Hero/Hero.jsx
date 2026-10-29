@@ -1,7 +1,39 @@
-import React from "react";
+
+import React, { useEffect, useState } from "react";
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase";
 import "./Hero.css";
 
+const DEFAULT_HERO_IMAGE = "/cinema-camera.png";
+
 const Hero = () => {
+  const [heroImage, setHeroImage] = useState(DEFAULT_HERO_IMAGE);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      doc(db, "siteContent", "hero"),
+      (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+
+          if (typeof data.imageUrl === "string" && data.imageUrl.trim()) {
+            setHeroImage(data.imageUrl);
+          } else {
+            setHeroImage(DEFAULT_HERO_IMAGE);
+          }
+        } else {
+          setHeroImage(DEFAULT_HERO_IMAGE);
+        }
+      },
+      (error) => {
+        console.error("Failed to load Hero image:", error);
+        setHeroImage(DEFAULT_HERO_IMAGE);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       <section className="omt-hero" id="home">
@@ -55,10 +87,12 @@ const Hero = () => {
               <strong>01</strong>
               <span>CREATIVE STUDIO</span>
             </div>
+
             <div>
               <strong>∞</strong>
               <span>STORIES TO TELL</span>
             </div>
+
             <div>
               <strong>4K</strong>
               <span>DETAIL IN EVERY FRAME</span>
@@ -77,8 +111,14 @@ const Hero = () => {
 
           <img
             className="omt-hero-camera"
-            src="/cinema-camera.png"
+            src={heroImage}
             alt="Professional cinema camera setup"
+            loading="eager"
+            onError={() => {
+              if (heroImage !== DEFAULT_HERO_IMAGE) {
+                setHeroImage(DEFAULT_HERO_IMAGE);
+              }
+            }}
           />
 
           <div className="omt-camera-caption">
@@ -99,10 +139,16 @@ const Hero = () => {
 
             <div className="omt-edit-timeline">
               <span>VIDEO</span>
+
               <div className="omt-timeline-clips">
-                <i></i><i></i><i></i><i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
               </div>
+
               <span>AUDIO</span>
+
               <div className="omt-audio-wave">
                 {Array.from({ length: 24 }, (_, i) => (
                   <i key={i}></i>
@@ -128,8 +174,6 @@ const Hero = () => {
           <i></i>
         </a>
       </section>
-
-      
     </>
   );
 };

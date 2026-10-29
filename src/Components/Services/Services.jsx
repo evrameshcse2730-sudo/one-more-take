@@ -3,14 +3,13 @@ import React from "react";
 import "./Services.css";
 
 const services = [
-{
-  number: "01",
-  title: "AI Video Generation",
-  description:
-    "Transform ideas into stunning AI-powered videos with creative visuals, cinematic scenes and next-generation storytelling.",
-  tags: ["AI Video", "AI Visuals", "Creative Films"],
-},
-
+  {
+    number: "01",
+    title: "AI Video Generation",
+    description:
+      "Transform ideas into stunning AI-powered videos with creative visuals, cinematic scenes and next-generation storytelling.",
+    tags: ["AI Video", "AI Visuals", "Creative Films"],
+  },
   {
     number: "02",
     title: "Promotional Shoot",
@@ -48,7 +47,38 @@ const services = [
   },
 ];
 
-const Services = () => {
+const Services = ({ onGenerateQuotation }) => {
+  const handleServiceQuotation = (service) => {
+    if (onGenerateQuotation) {
+      onGenerateQuotation({
+        type: "service",
+        name: service.title,
+        description: service.description,
+        includes: service.tags,
+      });
+    } else {
+      // Fallback if the quotation handler hasn't been passed
+      sessionStorage.setItem(
+        "omt-selected-quotation-plan",
+        JSON.stringify({
+          type: "service",
+          name: service.title,
+          description: service.description,
+          includes: service.tags,
+        })
+      );
+
+      window.location.href = "/quotation";
+    }
+  };
+
+  const goToContact = () => {
+    document.getElementById("contact")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <section id="services" className="omt-services">
       <div className="omt-services-header">
@@ -85,6 +115,7 @@ const Services = () => {
 
             <div className="omt-service-main">
               <h3>{service.title}</h3>
+
               <p>{service.description}</p>
 
               <div className="omt-service-tags">
@@ -94,13 +125,14 @@ const Services = () => {
               </div>
             </div>
 
-            <a
-              href="#contact"
+            <button
+              type="button"
               className="omt-service-arrow"
-              aria-label={`Enquire about ${service.title}`}
+              aria-label={`Get quotation for ${service.title}`}
+              onClick={() => handleServiceQuotation(service)}
             >
               ↗
-            </a>
+            </button>
           </article>
         ))}
       </div>
@@ -108,9 +140,13 @@ const Services = () => {
       <div className="omt-services-bottom reveal">
         <span>HAVE A PROJECT IN MIND?</span>
 
-        <a href="#contact">
+        <button
+          type="button"
+          className="omt-services-create-btn"
+          onClick={goToContact}
+        >
           LET'S CREATE SOMETHING <b>↗</b>
-        </a>
+        </button>
       </div>
     </section>
   );
